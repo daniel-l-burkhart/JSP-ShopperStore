@@ -1,22 +1,26 @@
 package controller;
 
 import java.io.IOException;
-import java.net.PasswordAuthentication;
 import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.websocket.Session;
+import javax.servlet.http.HttpSession;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
-import com.sun.xml.internal.ws.wsdl.writer.document.Message;
-
-import dao.UserDAOImpl;
 import model.User;
-import sun.rmi.transport.Transport;
+import dao.UserDAO;
+import dao.UserDAOImpl;
 
 /**
  * Servlet implementation class ResetPassword
@@ -78,7 +82,6 @@ public class ResetPassword extends HttpServlet {
 				String mess = "Check email for a new password";
 				request.setAttribute("mess", mess);
 
-				// gửi mật khẩu mới qua email.
 				final String username_mail = "GMAILENTERHERE@gmail.com";
 				final String password = "ENTER-EMAIL-PASSWORD-HERE";
 
@@ -94,30 +97,37 @@ public class ResetPassword extends HttpServlet {
 				props.put("mail.smtp.starttls.enable", "true");
 				props.put("mail.smtp.host", "smtp.gmail.com");
 				props.put("mail.smtp.port", "587");
-				
-				/*
-				 * Session session_mail = Session.getInstance(props, new
-				 * javax.mail.Authenticator() { protected PasswordAuthentication
-				 * getPasswordAuthentication() { return new
-				 * PasswordAuthentication(username_mail, password); } }); try { Message message
-				 * = new MimeMessage(session_mail); message.setHeader("Content-Type",
-				 * "text/plain; charset=UTF-8"); message.setFrom(new
-				 * InternetAddress(username_mail));
-				 * message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-				 * message.setSubject(subject); message.setContent(text,
-				 * "text/html; charset=utf-8"); Transport.send(message); } catch
-				 * (MessagingException e) { throw new RuntimeException(e); }
-				 * 
-				 * } else { url = "/resetpassword.jsp";
-				 * 
-				 * } RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-				 * rd.forward(request, response);
-				 */
+
+				Session session_mail = Session.getInstance(props, new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username_mail, password);
+					}
+				});
+
+				try {
+					Message message = new MimeMessage(session_mail);
+					message.setHeader("Content-Type", "text/plain; charset=UTF-8");
+					message.setFrom(new InternetAddress(username_mail));
+					message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+					message.setSubject(subject);
+					message.setContent(text, "text/html; charset=utf-8");
+					Transport.send(message);
+
+				} catch (MessagingException e) {
+					throw new RuntimeException(e);
+				}
+
+			} else {
+				url = "/resetpassword.jsp";
+
 			}
+			RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+			rd.forward(request, response);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/resetpassword.jsp");
 		}
-
 	}
+
 }
