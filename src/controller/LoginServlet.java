@@ -20,22 +20,25 @@ import dao.UserDAOImpl;
  */
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private UserDAOImpl userDAO = new UserDAOImpl();
-	private List<Cart> cart = new ArrayList<Cart>();
+	private UserDAOImpl userDAO;
+	private Cart cart;
+
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public LoginServlet() {
 		super();
-		// TODO Auto-generated constructor stub
+
+		this.userDAO = new UserDAOImpl();
+		this.cart = new Cart();
 	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	}
 
@@ -43,17 +46,18 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-
 		String err = "";
+
 		if (username.equals("") || password.equals("")) {
-			err += "Phải nhập đầy đủ thông tin!";
+			err += "Must enter full information!";
 		} else {
-			if (userDAO.login(username, password) == false) {
-				err += "Tên đăng nhập hoặc mật khẩu không chính xác!";
+			if (this.userDAO.login(username, password) == false) {
+				err += "Username or password is incorrect";
 			}
 		}
 
@@ -62,25 +66,28 @@ public class LoginServlet extends HttpServlet {
 		}
 
 		String url = "/login.jsp";
+
 		try {
 			if (err.length() == 0) {
+
 				HttpSession session = request.getSession();
 				session.setAttribute("username", username);
-				session.setAttribute("cart", cart);
-				userDAO.login(username, password);
-				Cookie loginCookie = new Cookie("username",username);
-	            //setting cookie to expiry in 30 mins
-	            loginCookie.setMaxAge(30*60);
-	            response.addCookie(loginCookie);
-	            response.sendRedirect("index.jsp");
+				session.setAttribute("cart", this.cart);
+
+				this.userDAO.login(username, password);
+				Cookie loginCookie = new Cookie("username", username);
+				loginCookie.setMaxAge(30 * 60);
+
+				response.addCookie(loginCookie);
+				response.sendRedirect("index.jsp");
 				url = "/index.jsp";
+
 			} else {
 				url = "/login.jsp";
-				RequestDispatcher rd = getServletContext()
-						.getRequestDispatcher(url);
+				RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
 				rd.forward(request, response);
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendRedirect("/login.jsp");

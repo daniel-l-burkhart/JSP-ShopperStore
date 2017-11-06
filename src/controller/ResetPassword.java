@@ -53,10 +53,10 @@ public class ResetPassword extends HttpServlet {
 
 		String err = "";
 		if (username.equals("")) {
-			err += "Phải nhập đầy đủ thông tin!";
+			err += "Username cannot be blank!";
 		} else {
 			if (userDAO.checkUser(username) == false) {
-				err += "Tên đăng nhập không tồn tại!";
+				err += "Username does not exist!";
 			}
 		}
 
@@ -68,17 +68,20 @@ public class ResetPassword extends HttpServlet {
 		try {
 			if (err.length() == 0) {
 
-				User u = userDAO.getUser(username);
+				User u = this.userDAO.getUser(username);
 				User new_user = new User(u.getUser_id(), username, "passwordreset", u.getDateOfBirth(), u.getGender(),
 						u.getEmail(), u.getFullName(), u.getAddress(), u.getRole());
-				userDAO.updateUser(new_user);
+
+				this.userDAO.updateUser(new_user);
 				url = "/login.jsp";
-				String mess = "Kiểm tra email để nhận mật khẩu mới!";
+
+				String mess = "Check email for a new password";
 				request.setAttribute("mess", mess);
 
 				// gửi mật khẩu mới qua email.
-				final String username_mail = "webbanhang1212050@gmail.com";
-				final String password = "matkhauwebbanhang";
+				final String username_mail = "GMAILENTERHERE@gmail.com";
+				final String password = "ENTER-EMAIL-PASSWORD-HERE";
+
 				String to = u.getEmail();
 				String subject = "Reset Password";
 				String text = "<i>Reset Password</i><br/>";
@@ -91,6 +94,7 @@ public class ResetPassword extends HttpServlet {
 				props.put("mail.smtp.starttls.enable", "true");
 				props.put("mail.smtp.host", "smtp.gmail.com");
 				props.put("mail.smtp.port", "587");
+				
 				/*
 				 * Session session_mail = Session.getInstance(props, new
 				 * javax.mail.Authenticator() { protected PasswordAuthentication
