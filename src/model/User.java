@@ -12,19 +12,19 @@ public class User {
 	private Date dateOfBirth;
 	private String gender;
 	private String email;
-	private String fullName;
+	private String phone;
 	private String address;
 	private String role;
 
 	public User(int user_id, String username, String password, Date dateOfBirth, String gender, String email,
-			String fullName, String address, String role) {
+			String phone, String address, String role) {
 		this.user_id = user_id;
 		this.username = username;
 
 		this.dateOfBirth = dateOfBirth;
 		this.gender = gender;
 		this.email = email;
-		this.fullName = fullName;
+		this.phone = phone;
 		this.address = address;
 		this.role = role;
 
@@ -81,12 +81,12 @@ public class User {
 		this.email = email;
 	}
 
-	public String getFullName() {
-		return this.fullName;
+	public String getPhone() {
+		return this.phone;
 	}
 
-	public void setFullname(String fullName) {
-		this.fullName = fullName;
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getAddress() {

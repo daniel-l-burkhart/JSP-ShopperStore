@@ -31,7 +31,7 @@ public class UserDAOImpl implements UserDAO {
 			ps.setDate(4, u.getDateOfBirth());
 			ps.setString(5, u.getGender());
 			ps.setString(6, u.getEmail());
-			ps.setString(7, u.getFullName());
+			ps.setString(7, u.getPhone());
 			ps.setString(8, u.getAddress());
 			ps.setString(9, u.getRole());
 			ps.executeUpdate();
@@ -88,7 +88,7 @@ public class UserDAOImpl implements UserDAO {
 	public void updateUser(User u) {
 
 		this.getDBConnection();
-		String sqlCommand = "UPDATE SET user_id=?, password=?, dateOfBirth=?, gender=?, email=?, fullName=?, address=?, role=? WHERE username=?";
+		String sqlCommand = "UPDATE SET user_id=?, password=?, dateOfBirth=?, gender=?, email=?, phone=?, address=?, role=? WHERE username=?";
 
 		try {
 			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(sqlCommand);
@@ -98,7 +98,7 @@ public class UserDAOImpl implements UserDAO {
 			ps.setDate(3, u.getDateOfBirth());
 			ps.setString(4, u.getGender());
 			ps.setString(5, u.getEmail());
-			ps.setString(6, u.getFullName());
+			ps.setString(6, u.getPhone());
 			ps.setString(7, u.getAddress());
 			ps.setString(8, u.getRole());
 			ps.setString(9, u.getUsername());
@@ -125,13 +125,14 @@ public class UserDAOImpl implements UserDAO {
 				int user_id = rs.getInt("user_id");
 				String foundUsername = rs.getString("username");
 				String password = rs.getString("password");
-				Date ngaysinh = rs.getDate("dateOfBirth");
-				String gioitinh = rs.getString("gender");
+				Date dateOfBirth = rs.getDate("dateOfBirth");
+				String gender = rs.getString("gender");
 				String email = rs.getString("email");
-				String sdt = rs.getString("fullName");
-				String diachi = rs.getString("address");
+				String phone = rs.getString("phone");
+				String address = rs.getString("address");
 				String role = rs.getString("role");
-				foundUser = new User(user_id, foundUsername, password, ngaysinh, gioitinh, email, sdt, diachi, role);
+				foundUser = new User(user_id, foundUsername, password, dateOfBirth, gender, email, phone, address,
+						role);
 			}
 
 			this.mySQLConnection.close();

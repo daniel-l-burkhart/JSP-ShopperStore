@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="css/menu.css" />
 <link rel="stylesheet" href="css/main.css" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
+
 <style type="text/css">
 #main {
 	width: 1060px;
@@ -57,6 +58,7 @@
 	margin-bottom: 5px;
 }
 </style>
+
 </head>
 <body>
 	<%

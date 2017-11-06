@@ -3,12 +3,13 @@ package model;
 public class Category {
 
 	private int categoryID;
-
 	private String categoryName;
+
 
 	public Category() {
 		this.categoryID = 0;
 		this.categoryName = "";
+
 	}
 
 	public Category(int categoryID, String categoryName) {
@@ -37,5 +38,6 @@ public class Category {
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
 	}
+	
 
 }

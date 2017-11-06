@@ -71,7 +71,7 @@ public class ResetPassword extends HttpServlet {
 
 				User u = this.userDAO.getUser(username);
 				User new_user = new User(u.getUser_id(), username, "passwordreset", u.getDateOfBirth(), u.getGender(),
-						u.getEmail(), u.getFullName(), u.getAddress(), u.getRole());
+						u.getEmail(), u.getPhone(), u.getAddress(), u.getRole());
 
 				this.userDAO.updateUser(new_user);
 				url = "/login.jsp";
