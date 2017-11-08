@@ -5,7 +5,6 @@ public class Category {
 	private int categoryID;
 	private String categoryName;
 
-
 	public Category() {
 		this.categoryID = 0;
 		this.categoryName = "";

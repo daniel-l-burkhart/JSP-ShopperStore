@@ -5,6 +5,7 @@
 <%@page import="java.text.NumberFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -74,7 +75,7 @@
 			<div id="right">
 				<%
 					ProductDAOImpl productDAO = new ProductDAOImpl();
-					List<Product> list = new ArrayList<Product>();
+					ArrayList<Product> list = new ArrayList<Product>();
 					list = productDAO.getProducts();
 					String categoryID = null;
 					if (request.getParameter("categoryID") != null) {
@@ -94,7 +95,8 @@
 						<li class="preorder"><span class="tagimg "> </span> <a
 							href="detail.jsp?ma_san_pham=<%=p.getProductCode()%>"> <img
 								src="productImages" width=" 250px" height="250px" />
-								<h3><%=p.getPictureName()%></h3>
+								<h3>
+									<%=p.getPictureName()%></h3>
 								<h4>
 									Price:
 									<%=nf.format(p.getPrice())%>

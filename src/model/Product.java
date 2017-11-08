@@ -10,6 +10,10 @@ public class Product {
 	private String manufacturer;
 	private String information;
 
+	public Product() {
+
+	}
+
 	public Product(int productCode, int category, String productName, String pictureName, double price,
 			String rowExport, String information) {
 

@@ -8,7 +8,7 @@
 </head>
 <body>
 	<p
-		style="text-align: center; color: blue; margin-top: 10px; font-size: 14px; font-weight: bold; font-family: calibri;">Shopper
+		style="text-align: center; color: black; margin-top: 10px; font-size: 14px; font-weight: bold; font-family: calibri;">Shopper
 		server store!</p>
 </body>
 </html>

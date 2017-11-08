@@ -13,7 +13,10 @@ public class DBConnect {
 
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			myConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/store", "root", "root");
+
+			myConnection = DriverManager
+					.getConnection("jdbc:mysql://localhost:3306/store?autoReconnect=true&useSSL=false", "root", "root");
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

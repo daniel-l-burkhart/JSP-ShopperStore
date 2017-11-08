@@ -15,6 +15,10 @@ public class History {
 	private Timestamp timeStamp;
 	private int number;
 	private double moneyPaid;
+	
+	public History() {
+		
+	}
 
 	/**
 	 * History constructor
