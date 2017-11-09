@@ -6,13 +6,18 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
+<head></head>
 
 <%@ include file="header.jsp"%>
 
-</head>
 <body>
 
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1>View Categories</h1>
+		</div>
+	</div>
 
 	<%
 		CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
@@ -21,11 +26,12 @@
 	%>
 	<div class="container">
 		<nav>
-		<ul class="mcd-menu">
+		<ul class="list-group">
 			<%
 				for (Category c : list) {
 			%>
-			<li><a href="index.jsp?categoryID=<%=c.getCategoryID()%>"> <i
+			<li class="list-group-item"><a
+				href="index.jsp?categoryID=<%=c.getCategoryID()%>"> <i
 					class="fafa-home"> <img src="images/<%=c.getCategoryID()%>.png">
 				</i> <strong><%=c.getCategoryName()%></strong>
 			</a></li>
@@ -35,5 +41,8 @@
 		</ul>
 		</nav>
 	</div>
+
+	<%@ include file="footer.jsp"%>
+
 </body>
 </html>

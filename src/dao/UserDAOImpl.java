@@ -3,9 +3,9 @@ package dao;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -16,37 +16,40 @@ public class UserDAOImpl implements UserDAO {
 	private Connection mySQLConnection;
 
 	@Override
-	public void addUser(User u) {
+	public boolean addUser(User u) {
 
 		this.getDBConnection();
-		String sqlCommand = "INSERT INTO user value(?,?,?,?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO user value(?,?,?,?,?,?,?)";
 
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) this.mySQLConnection.prepareStatement(sqlCommand);
 
-			ps.setInt(1, u.getUser_id());
-			ps.setString(2, u.getUsername());
+			ps.setString(1, "0");
+			ps.setString(2, u.getEmail());
 			ps.setString(3, u.getPassword());
-			ps.setDate(4, u.getDateOfBirth());
-			ps.setString(5, u.getGender());
-			ps.setString(6, u.getEmail());
-			ps.setString(7, u.getPhone());
-			ps.setString(8, u.getAddress());
-			ps.setString(9, u.getRole());
+			ps.setString(4, u.getPhone());
+			ps.setString(5, u.getAddress());
+			ps.setString(6, u.getRole());
+			ps.setString(7, u.getFullName());
+
 			ps.executeUpdate();
 
 			this.mySQLConnection.close();
+
+			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
+		return false;
+
 	}
 
 	@Override
-	public boolean checkUser(String username) {
+	public boolean checkUser(String email) {
 		this.getDBConnection();
-		String sql = "select * from user where username='" + username + "'";
+		String sql = "select * from user where email='" + email + "'";
 		PreparedStatement ps;
 		try {
 			ps = (PreparedStatement) this.mySQLConnection.prepareStatement(sql);
@@ -63,11 +66,13 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public boolean login(String username, String password) {
+	public User login(String email, String password) {
+
+		User resultUser = new User();
 
 		this.getDBConnection();
 
-		String sql = "select * from user where username='" + username + "' and password='" + sha1(password) + "'";
+		String sql = "select * from user where email='" + email + "' and password='" + sha1(password) + "'";
 		PreparedStatement ps;
 
 		try {
@@ -75,33 +80,36 @@ public class UserDAOImpl implements UserDAO {
 			ResultSet rs = ps.executeQuery();
 
 			if (rs.next()) {
+
+				resultUser = this.getUser(email);
 				this.mySQLConnection.close();
-				return true;
+
+				return resultUser;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
 	@Override
 	public void updateUser(User u) {
 
 		this.getDBConnection();
-		String sqlCommand = "UPDATE SET user_id=?, password=?, dateOfBirth=?, gender=?, email=?, phone=?, address=?, role=? WHERE username=?";
+		String sqlCommand = "UPDATE SET user_id=?, password=?, phone=?, address=?, role=? WHERE email=?";
 
 		try {
 			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(sqlCommand);
 
 			ps.setInt(1, u.getUser_id());
 			ps.setString(2, u.getPassword());
-			ps.setDate(3, u.getDateOfBirth());
-			ps.setString(4, u.getGender());
-			ps.setString(5, u.getEmail());
-			ps.setString(6, u.getPhone());
-			ps.setString(7, u.getAddress());
-			ps.setString(8, u.getRole());
-			ps.setString(9, u.getUsername());
+
+			ps.setString(3, u.getPhone());
+			ps.setString(4, u.getAddress());
+			ps.setString(5, u.getRole());
+
+			ps.setString(6, u.getEmail());
+
 			ps.executeUpdate();
 
 			this.mySQLConnection.close();
@@ -112,10 +120,10 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User getUser(String username) {
+	public User getUser(String email) {
 
 		this.getDBConnection();
-		String mySQLCommand = "SELECT * FROM user WHERE username='" + username + "'";
+		String mySQLCommand = "SELECT * FROM user WHERE username='" + email + "'";
 		User foundUser = null;
 
 		try {
@@ -123,19 +131,16 @@ public class UserDAOImpl implements UserDAO {
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
 				int user_id = rs.getInt("user_id");
-				String foundUsername = rs.getString("username");
 				String password = rs.getString("password");
-				Date dateOfBirth = rs.getDate("dateOfBirth");
-				String gender = rs.getString("gender");
-				String email = rs.getString("email");
+				String foundEmail = rs.getString("email");
 				String phone = rs.getString("phone");
 				String address = rs.getString("address");
 				String role = rs.getString("role");
-				foundUser = new User(user_id, foundUsername, password, dateOfBirth, gender, email, phone, address,
-						role);
+				String fullName = rs.getString("fullName");
+				foundUser = new User(user_id, foundEmail, password, fullName, phone, address, role);
 			}
-
 			this.mySQLConnection.close();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

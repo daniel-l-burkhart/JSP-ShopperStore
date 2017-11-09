@@ -1,3 +1,4 @@
+
 <%@page import="java.util.ArrayList"%>
 <%@page import="model.Product"%>
 <%@page import="java.util.List"%>
@@ -10,17 +11,17 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Products</title>
-<link rel="stylesheet" href="css/product.css" />
-<link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/menu.css" />
 
 <%@ include file="header.jsp"%>
 <body>
 
-	<div class="container">
 
-		<%!ProductDAOImpl productDAO = new ProductDAOImpl();
-	NumberFormat nf = NumberFormat.getInstance();%>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>View Products</h1>
+		</div>
+	</div>
+	<div class="container">
 
 		<table class="datatable table table-striped table-bordered">
 
@@ -33,7 +34,9 @@
 			</tr>
 
 			<%
-				for (Product currProduct : this.productDAO.getProducts()) {
+				ProductDAOImpl productDAO = new ProductDAOImpl();
+				NumberFormat nf = NumberFormat.getInstance();
+				for (Product currProduct : productDAO.getProducts()) {
 			%>
 
 			<tr>
@@ -47,7 +50,7 @@
 				<td><%=currProduct.getProductName()%></td>
 				<td><%=currProduct.getPrice()%></td>
 				<td><%=currProduct.getManufacturer()%></td>
-				<td><a
+				<td><a class="btn btn-primary"
 					href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">Details
 				</a></td>
 

@@ -10,7 +10,7 @@ public interface UserDAO {
 	 * @param u
 	 *            The user object from the controller
 	 */
-	public void addUser(User u);
+	public boolean addUser(User u);
 
 	/**
 	 * Checks that the username is in the DB
@@ -30,7 +30,7 @@ public interface UserDAO {
 	 *            The password
 	 * @return True if successful, false otherwise
 	 */
-	public boolean login(String username, String password);
+	public User login(String username, String password);
 
 	/**
 	 * Updates the user

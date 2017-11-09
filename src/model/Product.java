@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * Product class - model object representation of database record for product
+ * 
+ * @author daniel
+ */
 public class Product {
 
 	private int productCode;
@@ -10,74 +15,145 @@ public class Product {
 	private String manufacturer;
 	private String information;
 
+	/**
+	 * Product constructor
+	 */
 	public Product() {
 
 	}
 
+	/**
+	 * Product constructor
+	 * 
+	 * @param productCode
+	 *            The product's uniquely identifiable product code.
+	 * @param category
+	 *            The product's category
+	 * @param productName
+	 *            The product's name
+	 * @param pictureName
+	 *            The name of the image that goes with this product
+	 * @param price
+	 *            The price of the product
+	 * @param manufacturer
+	 *            The product's manufacturer
+	 * @param information
+	 *            Description of the product
+	 */
 	public Product(int productCode, int category, String productName, String pictureName, double price,
-			String rowExport, String information) {
+			String manufacturer, String information) {
 
+		this();
 		this.productCode = productCode;
 		this.category = category;
 		this.productName = productName;
 		this.pictureName = pictureName;
 		this.price = price;
-		this.manufacturer = rowExport;
+		this.manufacturer = manufacturer;
 		this.information = information;
 	}
 
+	/**
+	 * @return the productCode
+	 */
 	public int getProductCode() {
-		return this.productCode;
+		return productCode;
 	}
 
+	/**
+	 * @return the category
+	 */
+	public int getCategory() {
+		return category;
+	}
+
+	/**
+	 * @return the productName
+	 */
+	public String getProductName() {
+		return productName;
+	}
+
+	/**
+	 * @return the pictureName
+	 */
+	public String getPictureName() {
+		return pictureName;
+	}
+
+	/**
+	 * @return the price
+	 */
+	public double getPrice() {
+		return price;
+	}
+
+	/**
+	 * @return the manufacturer
+	 */
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	/**
+	 * @return the information
+	 */
+	public String getInformation() {
+		return information;
+	}
+
+	/**
+	 * @param productCode
+	 *            the productCode to set
+	 */
 	public void setProductCode(int productCode) {
 		this.productCode = productCode;
 	}
 
-	public int getCategory() {
-		return this.category;
-	}
-
+	/**
+	 * @param category
+	 *            the category to set
+	 */
 	public void setCategory(int category) {
 		this.category = category;
 	}
 
-	public String getProductName() {
-		return this.productName;
-	}
-
+	/**
+	 * @param productName
+	 *            the productName to set
+	 */
 	public void setProductName(String productName) {
 		this.productName = productName;
 	}
 
-	public String getPictureName() {
-		return this.pictureName;
-	}
-
+	/**
+	 * @param pictureName
+	 *            the pictureName to set
+	 */
 	public void setPictureName(String pictureName) {
 		this.pictureName = pictureName;
 	}
 
-	public double getPrice() {
-		return this.price;
-	}
-
+	/**
+	 * @param price
+	 *            the price to set
+	 */
 	public void setPrice(double price) {
 		this.price = price;
 	}
 
-	public String getManufacturer() {
-		return this.manufacturer;
-	}
-
+	/**
+	 * @param manufacturer
+	 *            the manufacturer to set
+	 */
 	public void setManufacturer(String manufacturer) {
 		this.manufacturer = manufacturer;
 	}
 
-	public String getInformation() {
-		return this.information;
-	}
-
+	/**
+	 * @param information
+	 *            the information to set
+	 */
 	public void setInformation(String information) {
 		this.information = information;
 	}

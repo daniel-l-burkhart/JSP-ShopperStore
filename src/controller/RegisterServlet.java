@@ -3,27 +3,23 @@ package controller;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import dao.UserDAOImpl;
 import model.Cart;
 import model.User;
-import dao.UserDAOImpl;
 
-/**
- * Servlet implementation class RegisterServlet
- */
+@WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -58,40 +54,27 @@ public class RegisterServlet extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 
-		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		java.sql.Date dateOfBirth = null;
 
-		try {
-			dateOfBirth = new java.sql.Date(
-					(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dateOfBirth"))).getTime());
-		} catch (ParseException e1) {
-			e1.printStackTrace();
-		}
-
-		String gender = request.getParameter("gender");
-		String email = request.getParameter("email");
 		String fullName = request.getParameter("fullName");
+		String email = request.getParameter("email");
+		String phone = request.getParameter("phone");
 		String address = request.getParameter("address");
-		System.out.println(username);
 
 		String err = "";
 		String url = "/register.jsp";
 
-		if (username.equals("") || password.equals("") || email.equals("") || address.equals("")
-				|| fullName.equals("")) {
+		if (fullName.equals("") || password.equals("") || email.equals("") || address.equals("") || phone.equals("")) {
 			err += "Fields cannot be blank!";
+		} else if (this.userDAO.checkUser(email) == true) {
+			err += "Account Already Exists!";
 		} else {
-			if (userDAO.checkUser(username) == true) {
-				err += "Account Already Exists!";
-			} else {
-				Pattern pattenObj = Pattern.compile("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
-						+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
-				Matcher matcherObj = pattenObj.matcher(email);
+			Pattern pattenObj = Pattern.compile(
+					"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+			Matcher matcherObj = pattenObj.matcher(email);
 
-				if (!matcherObj.matches()) {
-					err += "Please enter a valid email";
-				}
+			if (!matcherObj.matches()) {
+				err += "Please enter a valid email";
 			}
 		}
 
@@ -102,14 +85,23 @@ public class RegisterServlet extends HttpServlet {
 		try {
 			if (err.length() == 0) {
 				HttpSession session = request.getSession();
-				session.setAttribute("cart", cart);
-				userDAO.addUser(new User(0, username, password, dateOfBirth, gender, email, fullName, address, "2"));
-				userDAO.login(username, password);
+				session.setAttribute("cart", this.cart);
 
-				Cookie loginCookie = new Cookie("username", username);
-				// setting cookie to expiry in 30 mins
-				loginCookie.setMaxAge(30 * 60);
-				response.addCookie(loginCookie);
+				User newUser = new User();
+
+				newUser.setEmail(email);
+				newUser.setPassword(password);
+
+				newUser.setFullName(fullName);
+				newUser.setPhone(phone);
+				newUser.setAddress(address);
+				newUser.setRole("2");
+
+				this.userDAO.addUser(newUser);
+
+				newUser = this.userDAO.login(newUser.getEmail(), newUser.getPassword());
+
+				session.setAttribute("user", newUser);
 				response.sendRedirect("index.jsp");
 
 			} else {

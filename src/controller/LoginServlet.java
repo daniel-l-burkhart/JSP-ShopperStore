@@ -1,23 +1,20 @@
 package controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.Cart;
 import dao.UserDAOImpl;
+import model.Cart;
+import model.User;
 
-/**
- * Servlet implementation class LoginServlet
- */
+@WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAOImpl userDAO;
@@ -39,7 +36,9 @@ public class LoginServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		String url = "/index.jsp";
+		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -49,14 +48,14 @@ public class LoginServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String username = request.getParameter("username");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		String err = "";
 
-		if (username.equals("") || password.equals("")) {
+		if (email.equals("") || password.equals("")) {
 			err += "Must enter full information!";
 		} else {
-			if (this.userDAO.login(username, password) == false) {
+			if (this.userDAO.login(email, password) == null) {
 				err += "Username or password is incorrect";
 			}
 		}
@@ -71,14 +70,11 @@ public class LoginServlet extends HttpServlet {
 			if (err.length() == 0) {
 
 				HttpSession session = request.getSession();
-				session.setAttribute("username", username);
 				session.setAttribute("cart", this.cart);
 
-				this.userDAO.login(username, password);
-				Cookie loginCookie = new Cookie("username", username);
-				loginCookie.setMaxAge(30 * 60);
+				User foundUser = this.userDAO.login(email, password);
+				session.setAttribute("user", foundUser);
 
-				response.addCookie(loginCookie);
 				response.sendRedirect("index.jsp");
 				url = "/index.jsp";
 

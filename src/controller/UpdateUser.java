@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,9 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.UserDAOImpl;
 import model.User;
 
-/**
- * Servlet implementation class UpdateUser
- */
+@WebServlet("/UpdateUser")
 public class UpdateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAOImpl userDAO = new UserDAOImpl();
@@ -49,34 +48,33 @@ public class UpdateUser extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String user_id = request.getParameter("userID");
-		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		Date dateOfBirth = null;
 
-		try {
-			dateOfBirth = new Date(
-					(new SimpleDateFormat("yyyy-MM-dd").parse(request.getParameter("dateOfBirth"))).getTime());
-		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		String gender = request.getParameter("gender");
 		String email = request.getParameter("email");
 		String fullName = request.getParameter("fullName");
 		String address = request.getParameter("address");
+		String phone = request.getParameter("phone");
 
 		String err = "";
 		String url = "/update_user.jsp";
 
 		if (password.equals("") || email.equals("") || fullName.equals("") || address.equals("")) {
-			err += "Cannot leave fields blank!";
-		} else {
+			err += "* Cannot leave fields blank!";
+		}
+
+		else {
 
 			Pattern pattenObj = Pattern.compile(
 					"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
 			Matcher matcherObj = pattenObj.matcher(email);
 			if (!matcherObj.matches()) {
-				err += "please enter a valid email";
+				err += "* Please enter a valid email";
+			}
+
+			Pattern pattenObj2 = Pattern.compile("^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})$");
+			Matcher matcherObj2 = pattenObj2.matcher(phone);
+			if (!matcherObj2.matches()) {
+				err += "* Wrong phone number format!";
 			}
 
 		}
@@ -87,8 +85,7 @@ public class UpdateUser extends HttpServlet {
 
 		try {
 			if (err.length() == 0) {
-				User u = new User(Integer.parseInt(user_id), username, password, dateOfBirth, gender, email, fullName,
-						address, "2");
+				User u = new User(Integer.parseInt(user_id), email, password, fullName, phone, address, "2");
 
 				this.userDAO.updateUser(u);
 

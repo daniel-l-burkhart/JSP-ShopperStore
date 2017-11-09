@@ -2,7 +2,9 @@ package controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import model.Cart;
 import model.CartItem;
 
+@WebServlet("/CartServlet")
 public class CartServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
@@ -26,7 +29,9 @@ public class CartServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doPost(request, response);
+		String url = "/index.jsp";
+		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+		rd.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -81,52 +86,52 @@ public class CartServlet extends HttpServlet {
 		}
 	}
 
-	private String addToCart(CartItem cartItem) {
+	private void addToCart(CartItem cartItem) {
 
 		for (CartItem item : this.cart.getLineItems()) {
 			if (item.getProduct().getProductCode() == cartItem.getProduct().getProductCode()) {
 				item.setQuantity(item.getQuantity() + 1);
-				return "cart";
+				// return "cart";
 			}
 		}
 
 		this.cart.addLineItemToCart(cartItem);
-		return "cart";
+		// return "cart";
 	}
 
-	private String deleteFromCart(CartItem itemToBeDeleted) {
+	private void deleteFromCart(CartItem itemToBeDeleted) {
 
 		for (CartItem currItem : this.cart.getLineItems()) {
 			if (currItem.getProduct().getProductCode() == itemToBeDeleted.getProduct().getProductCode()
 					&& itemToBeDeleted.getQuantity() > 1) {
 				itemToBeDeleted.setQuantity(itemToBeDeleted.getQuantity() - 1);
-				return "cart";
+				// return "cart";
 			}
 		}
-		return "cart";
+		// return "cart";
 	}
 
-	private String removeFromCart(CartItem removingItem) {
+	private void removeFromCart(CartItem removingItem) {
 		for (CartItem currItem : this.cart.getLineItems()) {
 			if (currItem.getProduct().getProductCode() == removingItem.getProduct().getProductCode()) {
 				this.cart.removeCartItem(currItem);
-				return "cart";
+				// return "cart";
 			}
 		}
-		return "cart";
+		// return "cart";
 	}
 
-	private String setCart(CartItem myCartItem) {
+	private void setCart(CartItem myCartItem) {
 
 		for (CartItem item : this.cart.getLineItems()) {
 			if (item.getProduct().getProductCode() == myCartItem.getProduct().getProductCode()) {
 				item.setQuantity(myCartItem.getQuantity());
-				return "cart";
+				// return "cart";
 			}
 		}
 
 		this.cart.addLineItemToCart(myCartItem);
-		return "cart";
+		// return "cart";
 	}
 
 }

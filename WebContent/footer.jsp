@@ -1,14 +1,29 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Footer</title>
-</head>
-<body>
-	<p
-		style="text-align: center; color: black; margin-top: 10px; font-size: 14px; font-weight: bold; font-family: calibri;">Shopper
-		server store!</p>
-</body>
+
+<footer
+	class="page-footer blue center-on-small-only navbar-fixed-bottom">
+	<!--Footer Links-->
+	<div class="container-fluid">
+		<div class="row">
+
+			<!--First column-->
+			<div class="col-md-6">
+				<h5 class="title">mySQL JSP Shopper Store</h5>
+				<p>This is a JSP and mySQL powered online shopping store.</p>
+				<div class="container-fluid">© 2017 Copyright: Daniel Burkhart</div>
+			</div>
+
+			<div class="col-md-6">
+				<h5 class="title">Links</h5>
+				<ul>
+					<li><a href="product.jsp">View Products</a></li>
+					<li><a href="category.jsp">Shop by categories</a></li>
+					<li><a href="register.jsp">Register Account</a></li>
+					<li><a href="login.jsp">Log in</a></li>
+				</ul>
+			</div>
+
+		</div>
+	</div>
+</footer>
+
 </html>

@@ -3,14 +3,15 @@ package model;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class User {
 
 	private int user_id;
-	private String username;
 	private String password;
-	private Date dateOfBirth;
-	private String gender;
+
+	private String fullName;
+
 	private String email;
 	private String phone;
 	private String address;
@@ -20,14 +21,17 @@ public class User {
 
 	}
 
-	public User(int user_id, String username, String password, Date dateOfBirth, String gender, String email,
-			String phone, String address, String role) {
-		this.user_id = user_id;
-		this.username = username;
+	public User(int user_id, String email, String password, String fullName, String phone, String address,
+			String role) {
 
-		this.dateOfBirth = dateOfBirth;
-		this.gender = gender;
+		if (user_id < 0 || email == null || password == null || fullName == null || phone == null || address == null
+				|| role == null) {
+			throw new IllegalArgumentException("Something is null. Figure it out.");
+		}
+
 		this.email = email;
+		this.user_id = user_id;
+		this.fullName = fullName;
 		this.phone = phone;
 		this.address = address;
 		this.role = role;
@@ -44,45 +48,28 @@ public class User {
 		this.user_id = user_id;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-
-		this.password = sha1(password);
-	}
-
-	public Date getDateOfBirth() {
-		return dateOfBirth;
-	}
-
-	public void setDateOfBirth(Date dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPassword() {
+		return this.password;
+	}
+
+	public void setPassword(String password) {
+		this.password = sha1(password);
+	}
+
+	public String getFullName() {
+		return this.fullName;
+	}
+
+	public void setFullName(String newName) {
+		this.fullName = newName;
 	}
 
 	public String getPhone() {

@@ -1,0 +1,64 @@
+footer.page-footer {
+	margin-top: 20px;
+	padding-top: 20px;
+	color: #fff;
+	background-color: #222;
+}
+
+footer.page-footer .container-fluid {
+	width: auto;
+}
+
+footer.page-footer .footer-copyright {
+	overflow: hidden;
+	height: 50px;
+	line-height: 50px;
+	color: rgba(255, 255, 255, 0.6);
+	background-color: rgba(0, 0, 0, 0.2);
+	text-align: center;
+	font-size: 0.9rem;
+}
+
+footer.page-footer a {
+	color: #fff;
+}
+
+footer.page-footer .title {
+	text-transform: uppercase;
+}
+
+footer.page-footer .call-to-action {
+	text-align: center;
+	padding-top: 1.3rem;
+	padding-bottom: 0.5rem;
+}
+
+footer.page-footer .call-to-action ul li {
+	display: inline-block;
+	padding-right: 10px;
+}
+
+footer.page-footer .social-section ul li {
+	display: inline-block;
+}
+
+footer.page-footer .social-section ul a {
+	margin-left: 0;
+	padding-left: 0;
+}
+
+footer.page-footer ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+@media only screen and (max-width: 992px) {
+	.center-on-small-only {
+		text-align: center;
+	}
+	.center-on-small-only .img-fluid, .center-on-small-only .modal-dialog.cascading-modal.modal-avatar .modal-header,
+		.modal-dialog.cascading-modal.modal-avatar .center-on-small-only .modal-header
+		{
+		display: inline;
+	}
+}
