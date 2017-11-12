@@ -89,14 +89,28 @@ public class ProductDAOImpl implements ProductDAO {
 	public ArrayList<Product> searchProducts(String productName, String categoryName) {
 		this.getDBConnection();
 
-		String searchByBothFields = "SELECT * FROM product, category WHERE productName= N'" + productName
-				+ "' AND product.categoryID = category.categoryID AND categoryName=N'" + categoryName + "'";
+		// "SELECT * FROM tbl_product WHERE MATCH(prod_name) AGAINST('$keyword')")
+		/*
+		 * String searchByBothFields =
+		 * "SELECT * FROM product, category WHERE productName= N'" + productName +
+		 * "' AND product.categoryID = category.categoryID AND categoryName=N'" +
+		 * categoryName + "'";
+		 */
+
+		String searchByBothFields = "SELECT * FROM product, category WHERE productName LIKE '%" + productName
+				+ "%' AND product.categoryID = category.categoryID AND categoryName=N'" + categoryName + "'";
 
 		String searchByCategoryName = "SELECT * FROM product, category WHERE product.categoryID = category.categoryID AND categoryName=N'"
 				+ categoryName + "'";
 
-		String searchByProductName = "SELECT * FROM product, category WHERE productName=N'" + productName
-				+ "' AND product.categoryID=category.categoryID";
+		/*
+		 * String searchByProductName =
+		 * "SELECT * FROM product, category WHERE productName=N'" + productName +
+		 * "' AND product.categoryID=category.categoryID";
+		 */
+
+		String searchByProductName = "SELECT * FROM product, category WHERE productName LIKE '%" + productName
+				+ "%' AND product.categoryID=category.categoryID";
 
 		String sqlCommand = "";
 
