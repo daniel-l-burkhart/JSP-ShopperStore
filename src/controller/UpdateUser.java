@@ -48,9 +48,9 @@ public class UpdateUser extends HttpServlet {
 		request.setCharacterEncoding("utf-8");
 		response.setCharacterEncoding("utf-8");
 		String user_id = request.getParameter("userID");
-		String password = request.getParameter("password");
 
 		String email = request.getParameter("email");
+		String password = request.getParameter("password");
 		String fullName = request.getParameter("fullName");
 		String address = request.getParameter("address");
 		String phone = request.getParameter("phone");
@@ -85,6 +85,7 @@ public class UpdateUser extends HttpServlet {
 
 		try {
 			if (err.length() == 0) {
+
 				User u = new User(Integer.parseInt(user_id), email, password, fullName, phone, address, "2");
 
 				this.userDAO.updateUser(u);

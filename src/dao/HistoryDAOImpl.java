@@ -21,7 +21,7 @@ public class HistoryDAOImpl implements HistoryDAO {
 	@Override
 	public void addHistory(History newHistory) {
 		this.getDBConnection();
-		String sqlCommand = "INSER INTO history value(?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO history value(?,?,?,?,?,?)";
 
 		PreparedStatement myPS;
 

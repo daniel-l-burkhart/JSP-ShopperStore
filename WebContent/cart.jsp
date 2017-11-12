@@ -18,14 +18,18 @@
 <body>
 	<%
 		ProductDAOImpl productDAO = new ProductDAOImpl();
-
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumIntegerDigits(0);
+
 		double total = 0;
 		Cart cart = null;
+
 		if (session.getAttribute("cart") != null) {
 			cart = (Cart) session.getAttribute("cart");
+			System.out.println(cart);
 		}
+
+		System.out.println(cart);
 
 		if (cart != null) {
 	%>
@@ -55,8 +59,9 @@
 
 
 			<td><img
-				src="productImages/<%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPictureName()%>" />
-			</td>
+				src="productImages/<%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPictureName()%>"
+				width="250px" height="250px" /></td>
+
 			<td><%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getProductName()%>
 			</td>
 
@@ -123,76 +128,7 @@
 		}
 	%>
 
-	<%-- <div id="content">
 
-		<div class="shopping-cart">
-
-
-			<div class="product">
-				<div class="product-image">
-					<img
-						src="sanpham/<%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPictureName()%>">
-				</div>
-				<div class="product-details">
-					<div class="product-title">
-						<%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getProductName()%>
-					</div>
-					<p class="product-description"></p>
-				</div>
-				<div class="product-price"><%=nf
-							.format(productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice())%>
-					VNĐ
-				</div>
-				<div class="product-quantity cart_quantity_button">
-					<a class="cart_quantity_up"
-						href="GioHangServlet?command=deleteCart&ma_san_pham=<%=item.getProduct().getProductCode()%>">
-						- </a> <input class="cart_quantity_input" type="number"
-						value="<%=item.getQuantity()%>" disabled="disabled"> <a
-						class="cart_quantity_up"
-						href="GioHangServlet?command=addCart&ma_san_pham=<%=item.getProduct().getProductCode()%>">
-						+ </a>
-				</div>
-				<div class="product-line-price" style="text-align: right">
-					<%=nf.format(productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice()
-							* item.getQuantity())%>
-					VNĐ <a
-						href="GioHangServlet?command=removeCart&ma_san_pham=<%=item.getProduct().getProductCode()%>"><img
-						style="margin-left: 10px" src="images/delete.png"></a>
-				</div>
-
-			</div>
-			<%
-				}
-							}
-			%>
-			<div class="totals">
-				<div class="totals-item">
-					<label>Tổng hóa đơn</label>
-				
-						VNĐ
-					</div>
-				</div>
-			</div>
-			<%
-				if(cart.getLineItems().size()>0)
-				{
-			%>
-			<a class="checkout" href="history.jsp" style="text-decoration: none;">Lịch
-				sử</a> <a class="checkout" href="ConfirmServlet?username=<%=username%>"
-				style="text-decoration: none;">Thanh toán</a>
-			<%
-				}else
-				{
-			%>
-			<a class="checkout" href="history.jsp" style="text-decoration: none;">Lịch
-				sử</a> <a class="checkout" href="product.jsp"
-				style="text-decoration: none;">Thanh toán</a>
-			<%
-				}
-			%>
-		</div>
-
-	</div> --%>
 	<div id="footer"><jsp:include page="footer.jsp"></jsp:include></div>
 	</div>
 </body>

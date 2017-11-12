@@ -106,6 +106,8 @@ public class ProductDAOImpl implements ProductDAO {
 			sqlCommand = searchByCategoryName;
 		} else if (!productName.equals("") && categoryName.equals("")) {
 			sqlCommand = searchByProductName;
+		} else {
+			sqlCommand = "SELECT * FROM product";
 		}
 
 		return this.getAllColumnsListOfProductsBySQL(sqlCommand);

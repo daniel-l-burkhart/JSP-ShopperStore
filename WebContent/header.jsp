@@ -58,8 +58,6 @@
 		if (sessionUser != null && sessionUser.getFullName() != null) {
 
 			username = sessionUser.getEmail();
-
-			//if (username != null) {
 	%>
 
 

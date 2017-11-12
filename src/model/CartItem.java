@@ -9,16 +9,17 @@ public class CartItem {
 	private int quantity;
 
 	public CartItem() {
-
+		this.productImpl = new ProductDAOImpl();
 	}
 
 	public CartItem(Product product, int quantity) {
+		this();
 		this.myProduct = product;
 		this.quantity = quantity;
 	}
 
 	public CartItem(int productCode, int quantity) {
-
+		this();
 		this.myProduct = this.productImpl.getSingleProductFromID(productCode);
 		this.quantity = quantity;
 	}

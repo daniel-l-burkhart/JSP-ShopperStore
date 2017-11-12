@@ -96,19 +96,18 @@ public class UserDAOImpl implements UserDAO {
 	public void updateUser(User u) {
 
 		this.getDBConnection();
-		String sqlCommand = "UPDATE SET user_id=?, password=?, phone=?, address=?, role=? WHERE email=?";
+		String sqlCommand = "UPDATE SET user_id=?, phone=?, address=?, role=? WHERE email=?";
 
 		try {
 			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(sqlCommand);
 
 			ps.setInt(1, u.getUser_id());
-			ps.setString(2, u.getPassword());
 
-			ps.setString(3, u.getPhone());
-			ps.setString(4, u.getAddress());
-			ps.setString(5, u.getRole());
+			ps.setString(2, u.getPhone());
+			ps.setString(3, u.getAddress());
+			ps.setString(4, u.getRole());
 
-			ps.setString(6, u.getEmail());
+			ps.setString(5, u.getEmail());
 
 			ps.executeUpdate();
 
@@ -123,14 +122,14 @@ public class UserDAOImpl implements UserDAO {
 	public User getUser(String email) {
 
 		this.getDBConnection();
-		String mySQLCommand = "SELECT * FROM user WHERE username='" + email + "'";
+		String mySQLCommand = "SELECT * FROM user WHERE email='" + email + "'";
 		User foundUser = null;
 
 		try {
 			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(mySQLCommand);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				int user_id = rs.getInt("user_id");
+				int user_id = rs.getInt("userID");
 				String password = rs.getString("password");
 				String foundEmail = rs.getString("email");
 				String phone = rs.getString("phone");

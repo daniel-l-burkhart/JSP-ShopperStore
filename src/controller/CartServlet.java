@@ -21,6 +21,7 @@ public class CartServlet extends HttpServlet {
 
 	public CartServlet() {
 		super();
+		this.cart = new Cart();
 	}
 
 	/**
@@ -49,7 +50,7 @@ public class CartServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			System.out.println(this.cart.getLineItems().size());
 			session.setAttribute("cart", this.cart);
-			response.sendRedirect("/shop/cart.jsp");
+			response.sendRedirect("cart.jsp");
 
 		} else if (command.equals("deleteCart")) {
 
@@ -60,7 +61,7 @@ public class CartServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 			System.out.println(this.cart.getLineItems().size());
 			session.setAttribute("cart", this.cart);
-			response.sendRedirect("/shop/cart.jsp");
+			response.sendRedirect("cart.jsp");
 
 		} else if (command.equals("removeCart")) {
 
@@ -70,7 +71,7 @@ public class CartServlet extends HttpServlet {
 
 			HttpSession session = request.getSession();
 			session.setAttribute("cart", this.cart);
-			response.sendRedirect("/shop/cart.jsp");
+			response.sendRedirect("cart.jsp");
 
 		} else if (command.equals("setCart")) {
 
@@ -81,7 +82,7 @@ public class CartServlet extends HttpServlet {
 			HttpSession session = request.getSession();
 
 			session.setAttribute("cart", this.cart);
-			response.sendRedirect("/shop/cart.jsp");
+			response.sendRedirect("cart.jsp");
 
 		}
 	}

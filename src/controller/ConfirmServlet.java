@@ -55,7 +55,7 @@ public class ConfirmServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String username = request.getParameter("username");
-		User u = userDAO.getUser(username); // lấy time lưu csdl
+		User u = this.userDAO.getUser(username);
 		Calendar calendar = Calendar.getInstance();
 		java.sql.Timestamp tdate = new java.sql.Timestamp(calendar.getTime().getTime());
 
@@ -64,16 +64,14 @@ public class ConfirmServlet extends HttpServlet {
 		NumberFormat nf = NumberFormat.getInstance();
 		nf.setMinimumFractionDigits(0);
 
-		// lay time gửi mail
 		Date dNow = new Date();
 		SimpleDateFormat ft = new SimpleDateFormat("dd/MM/yyyy 'at' hh:mm:ss a");
 
-		// xác nhận đơn đặt hàng qua mail
-		final String username_mail = "webbanhang1212050@gmail.com";
-		final String password = "matkhauwebbanhang";
+		final String username_mail = "mysqlshopperstore@gmail.com";
+		final String password = "mySQLShopper";
 		String to = u.getEmail();
 		String subject = "Confirm Cart";
-		String text = "<strong>Đơn Hàng - " + username + " - </strong><i> " + ft.format(dNow) + "</i> <ul>";
+		String text = "<strong>Order Details - " + username + " - </strong><i> " + ft.format(dNow) + "</i> <ul>";
 		if (cart != null) {
 			for (CartItem item : cart.getLineItems()) {
 
@@ -85,7 +83,7 @@ public class ConfirmServlet extends HttpServlet {
 						+ ": "
 						+ nf.format(
 								this.productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice())
-						+ "VNĐ </li>";
+						+ " </li>";
 
 				History h = new History(0, u.getUser_id(), item.getProduct().getProductCode(), tdate,
 						item.getQuantity(), (item.getQuantity() * this.productDAO
