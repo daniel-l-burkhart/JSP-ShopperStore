@@ -31,7 +31,7 @@
 				for (Category c : list) {
 			%>
 			<li class="list-group-item"><a
-				href="index.jsp?categoryID=<%=c.getCategoryID()%>"> <i
+				href="products_by_category.jsp?categoryID=<%=c.getCategoryID()%>"> <i
 					class="fafa-home"> <img src="images/<%=c.getCategoryID()%>.png">
 				</i> <strong><%=c.getCategoryName()%></strong>
 			</a></li>

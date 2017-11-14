@@ -8,18 +8,18 @@ import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
-import model.History;
+import model.Order;
 
-public class HistoryDAOImpl implements HistoryDAO {
+public class OrderDAOImpl implements OrderDAO {
 
 	private Connection mySQLConnection;
 
-	public HistoryDAOImpl() {
+	public OrderDAOImpl() {
 		this.getDBConnection();
 	}
 
 	@Override
-	public void addHistory(History newHistory) {
+	public void addHistory(Order newHistory) {
 		this.getDBConnection();
 		String sqlCommand = "INSERT INTO history value(?,?,?,?,?,?)";
 
@@ -46,11 +46,11 @@ public class HistoryDAOImpl implements HistoryDAO {
 	}
 
 	@Override
-	public ArrayList<History> getHistoriesForUser(int userID) {
+	public ArrayList<Order> getHistoriesForUser(int userID) {
 		this.getDBConnection();
 
 		String sql = "SELECT * FROM history WHERE userID='" + userID + "'";
-		ArrayList<History> orderHistory = new ArrayList<History>();
+		ArrayList<Order> orderHistory = new ArrayList<Order>();
 
 		try {
 
@@ -62,9 +62,9 @@ public class HistoryDAOImpl implements HistoryDAO {
 				int foundUserID = rs.getInt("userID");
 				int productCode = rs.getInt("productCode");
 				Timestamp timeStamp = rs.getTimestamp("timeStamp");
-				int number = rs.getInt("number");
-				double moneyPaid = rs.getDouble("moneyPaid");
-				orderHistory.add(new History(historyID, foundUserID, productCode, timeStamp, number, moneyPaid));
+				int number = rs.getInt("quantity");
+				double moneyPaid = rs.getDouble("orderTotal");
+				orderHistory.add(new Order(historyID, foundUserID, productCode, timeStamp, number, moneyPaid));
 			}
 
 			this.mySQLConnection.close();
@@ -72,6 +72,35 @@ public class HistoryDAOImpl implements HistoryDAO {
 			e.printStackTrace();
 		}
 		return orderHistory;
+	}
+
+	@Override
+	public ArrayList<Order> getHistoriesForAdmin() {
+		this.getDBConnection();
+		String command = "SELECT * FROM history";
+		ArrayList<Order> sales = new ArrayList<Order>();
+
+		try {
+
+			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(command);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				int historyID = rs.getInt("historyID");
+				int foundUserID = rs.getInt("userID");
+				int productCode = rs.getInt("productCode");
+				Timestamp timeStamp = rs.getTimestamp("timeStamp");
+				int number = rs.getInt("quantity");
+				double moneyPaid = rs.getDouble("orderTotal");
+				sales.add(new Order(historyID, foundUserID, productCode, timeStamp, number, moneyPaid));
+			}
+
+			this.mySQLConnection.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return sales;
 	}
 
 	private void getDBConnection() {

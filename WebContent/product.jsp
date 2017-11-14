@@ -15,7 +15,6 @@
 <%@ include file="header.jsp"%>
 <body>
 
-
 	<div class="container">
 		<div class="jumbotron">
 			<h1>View Products</h1>
@@ -30,6 +29,7 @@
 				<th>Product Name</th>
 				<th>Price</th>
 				<th>Manufacturer</th>
+				<th>Quantity</th>
 				<th>Detail</th>
 			</tr>
 
@@ -50,6 +50,7 @@
 				<td><%=currProduct.getProductName()%></td>
 				<td><%=currProduct.getPrice()%></td>
 				<td><%=currProduct.getManufacturer()%></td>
+				<td><%=currProduct.getQuantity()%></td>
 				<td><a class="btn btn-primary"
 					href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">Details
 				</a></td>

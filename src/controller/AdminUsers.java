@@ -10,22 +10,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.ProductDAOImpl;
-import model.Product;
+import dao.UserDAOImpl;
+import model.User;
 
-@WebServlet("/SearchServlet")
-public class SearchServlet extends HttpServlet {
+/**
+ * Servlet implementation class AdminUsers
+ */
+@WebServlet("/AdminUsers")
+public class AdminUsers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-	private ProductDAOImpl productDAO = new ProductDAOImpl();
-	private ArrayList<Product> list = new ArrayList<Product>();
+	private UserDAOImpl userDAO = new UserDAOImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public SearchServlet() {
+	public AdminUsers() {
 		super();
-
 	}
 
 	/**
@@ -34,6 +34,9 @@ public class SearchServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String url = "/index.jsp";
+		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+		rd.forward(request, response);
 	}
 
 	/**
@@ -43,30 +46,13 @@ public class SearchServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		request.setCharacterEncoding("utf-8");
-		response.setCharacterEncoding("utf-8");
-		String productName = request.getParameter("productName");
-		String categoryName = request.getParameter("categoryName");
-		String err = "";
+		String userID = request.getParameter("userID");
 
-		if (productName.equals("") && categoryName.equals("")) {
-			err += "You must enter at least one search term";
-		}
+		System.out.println(userID);
 
-		if (err.length() > 0) {
-			request.setAttribute("err", err);
-		}
+		this.userDAO.deleteUserByID(userID);
 
-		if (this.productDAO.searchProducts(productName, categoryName).size() != 0 && err == "") {
-			this.list = this.productDAO.searchProducts(productName, categoryName);
-			request.setAttribute("resultList", this.list);
-		} else {
-
-			request.setAttribute("resultList", null);
-			
-		}
-
-		String url = "/search_page.jsp";
+		String url = "/admin_users.jsp";
 		try {
 
 			RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
@@ -74,8 +60,8 @@ public class SearchServlet extends HttpServlet {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			response.sendRedirect("/login.jsp");
 		}
+
 	}
 
 }

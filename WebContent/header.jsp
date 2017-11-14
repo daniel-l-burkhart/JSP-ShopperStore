@@ -5,19 +5,14 @@
 
 <title>Shopper store</title>
 
-<!-- Latest compiled and minified CSS -->
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <link rel="stylesheet" href="css/main.css">
 <link rel="stylesheet" href="css/footer.css">
 
-
-<!-- jQuery library -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-<!-- Latest compiled JavaScript -->
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
@@ -44,36 +39,63 @@
 	<div class="navbar-header">
 		<a class="navbar-brand" href="index.jsp">Shopper Store</a>
 	</div>
-	<ul class="nav navbar-nav">
-		<li><a href="product.jsp">Products</a></li>
-		<li><a href="category.jsp">Categories</a></li>
-	</ul>
-
 
 	<%
 		HttpSession getSession = request.getSession();
 		String username = null;
-
 		User sessionUser = (User) getSession.getAttribute("user");
-		if (sessionUser != null && sessionUser.getFullName() != null) {
-
+		if (sessionUser != null && sessionUser.getRole().equals("1")) {
 			username = sessionUser.getEmail();
 	%>
 
+	<ul class="nav navbar-nav">
+		<li><a href="product.jsp">Products</a></li>
+		<li><a href="category.jsp">Categories</a></li>
+		<li><a href="search_page.jsp">Search</a></li>
+		<li><a href="admin_users.jsp">Users List</a></li>
+		<li><a href="admin_sales.jsp">Sales List</a></li>
+		<li><a href="update_quantity.jsp">Update Inventory</a></li>
+	</ul>
 
 	<ul class="nav navbar-nav navbar-right">
-		<li><a href="logout.jsp"><span
+
+		<li><a href="LogoutServlet"><span
 				class="glyphicon glyphicon-user"></span> Logout</a></li>
 		<li><a href="update_user.jsp?username=<%=username%>"><span
 				class="glyphicon glyphicon-log-in"></span> <%=username%></a></li>
 
 	</ul>
 
+	<%
+		} else if (sessionUser != null) {
+			username = sessionUser.getEmail();
+	%>
+
+	<ul class="nav navbar-nav">
+		<li><a href="product.jsp">Products</a></li>
+		<li><a href="category.jsp">Categories</a></li>
+		<li><a href="search_page.jsp">Search</a></li>
+	</ul>
+
+	<ul class="nav navbar-nav navbar-right">
+		<li><a href="cart.jsp"><span
+				class="glyphicon glyphicon-shopping-cart"></span>Cart</a></li>
+		<li><a href="LogoutServlet"><span
+				class="glyphicon glyphicon-user"></span> Logout</a></li>
+		<li><a href="update_user.jsp?username=<%=username%>"><span
+				class="glyphicon glyphicon-log-in"></span> <%=username%></a></li>
+
+	</ul>
 
 	<%
 		} else {
 	%>
 
+	<ul class="nav navbar-nav">
+		<li><a href="product.jsp">Products</a></li>
+		<li><a href="category.jsp">Categories</a></li>
+		<li><a href="search_page.jsp">Search</a></li>
+	</ul>
 
 	<ul class="nav navbar-nav navbar-right">
 		<li><a href="register.jsp"><span
@@ -81,7 +103,6 @@
 		<li><a href="login.jsp"><span
 				class="glyphicon glyphicon-log-in"></span> Login</a></li>
 	</ul>
-
 
 	<%
 		}

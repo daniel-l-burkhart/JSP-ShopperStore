@@ -9,14 +9,27 @@ import com.mysql.jdbc.PreparedStatement;
 
 import model.Product;
 
+/**
+ * Java class to interact with Product table
+ * 
+ * @author Daniel
+ *
+ */
 public class ProductDAOImpl implements ProductDAO {
 
 	private Connection mySQLConnection;
 
+	/**
+	 * Constructor for class
+	 */
+	public ProductDAOImpl() {
+		this.mySQLConnection = DBConnect.getConnecttion();
+	}
+
 	@Override
 	public void addProduct(Product myProduct) {
 		this.getDBConnection();
-		String sql = "insert into product value(?,?,?,?,?,?)";
+		String sql = "insert into product value(?,?,?,?,?,?,?)";
 		PreparedStatement ps;
 
 		try {
@@ -28,6 +41,7 @@ public class ProductDAOImpl implements ProductDAO {
 			ps.setDouble(4, myProduct.getPrice());
 			ps.setString(5, myProduct.getManufacturer());
 			ps.setString(6, myProduct.getInformation());
+			ps.setInt(7, myProduct.getQuantity());
 
 			ps.executeUpdate();
 			this.mySQLConnection.close();
@@ -56,8 +70,10 @@ public class ProductDAOImpl implements ProductDAO {
 				Double price = myRS.getDouble("price");
 				String manufacturer = myRS.getString("manufacturer");
 				String information = myRS.getString("information");
+				int quantity = myRS.getInt("quantity");
+
 				myProduct = new Product(productCode, categoryID, productName, pictureName, price, manufacturer,
-						information);
+						information, quantity);
 			}
 
 			this.mySQLConnection.close();
@@ -89,25 +105,11 @@ public class ProductDAOImpl implements ProductDAO {
 	public ArrayList<Product> searchProducts(String productName, String categoryName) {
 		this.getDBConnection();
 
-		// "SELECT * FROM tbl_product WHERE MATCH(prod_name) AGAINST('$keyword')")
-		/*
-		 * String searchByBothFields =
-		 * "SELECT * FROM product, category WHERE productName= N'" + productName +
-		 * "' AND product.categoryID = category.categoryID AND categoryName=N'" +
-		 * categoryName + "'";
-		 */
-
 		String searchByBothFields = "SELECT * FROM product, category WHERE productName LIKE '%" + productName
 				+ "%' AND product.categoryID = category.categoryID AND categoryName=N'" + categoryName + "'";
 
 		String searchByCategoryName = "SELECT * FROM product, category WHERE product.categoryID = category.categoryID AND categoryName=N'"
 				+ categoryName + "'";
-
-		/*
-		 * String searchByProductName =
-		 * "SELECT * FROM product, category WHERE productName=N'" + productName +
-		 * "' AND product.categoryID=category.categoryID";
-		 */
 
 		String searchByProductName = "SELECT * FROM product, category WHERE productName LIKE '%" + productName
 				+ "%' AND product.categoryID=category.categoryID";
@@ -125,6 +127,66 @@ public class ProductDAOImpl implements ProductDAO {
 		}
 
 		return this.getAllColumnsListOfProductsBySQL(sqlCommand);
+	}
+
+	@Override
+	public boolean updateQuantity(int productCode, int quantity) {
+
+		this.getDBConnection();
+
+		String sql = "SELECT quantity FROM product WHERE productCode='" + productCode + "'";
+		int oldQuantity = 0;
+		try {
+			PreparedStatement myPS = (PreparedStatement) this.mySQLConnection.prepareStatement(sql);
+			ResultSet myRS = myPS.executeQuery();
+			myRS.next();
+			oldQuantity = myRS.getInt("quantity");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		int resultQuantity = oldQuantity - quantity;
+
+		String command = "UPDATE product SET quantity='" + resultQuantity + "' WHERE productCode='" + productCode + "'";
+
+		int resultValue = -2;
+		try {
+			PreparedStatement myPS = (PreparedStatement) this.mySQLConnection.prepareStatement(command);
+			resultValue = myPS.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (resultValue == 1) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	@Override
+	public boolean replinishQuantity(int productCode, int newQuantity) {
+
+		this.getDBConnection();
+
+		String command = "UPDATE product SET quantity='" + newQuantity + "' WHERE productCode='" + productCode + "'";
+
+		int resultValue = -2;
+		try {
+			PreparedStatement myPS = (PreparedStatement) this.mySQLConnection.prepareStatement(command);
+			resultValue = myPS.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		if (resultValue == 1) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 
 	private void getDBConnection() {
@@ -147,8 +209,10 @@ public class ProductDAOImpl implements ProductDAO {
 				Double price = myRS.getDouble("price");
 				String manufacturer = myRS.getString("manufacturer");
 				String information = myRS.getString("information");
+				int quantity = myRS.getInt("quantity");
+
 				productList.add(new Product(productCode, categoryID, productName, pictureName, price, manufacturer,
-						information));
+						information, quantity));
 			}
 
 			this.mySQLConnection.close();

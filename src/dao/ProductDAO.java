@@ -16,4 +16,8 @@ public interface ProductDAO {
 
 	public ArrayList<Product> getAllProductsFromCategory(int categoryID);
 
+	public boolean updateQuantity(int productCode, int quantity);
+
+	public boolean replinishQuantity(int productCode, int quantity);
+
 }

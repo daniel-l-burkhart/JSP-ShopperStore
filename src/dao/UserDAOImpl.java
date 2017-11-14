@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -96,18 +97,19 @@ public class UserDAOImpl implements UserDAO {
 	public void updateUser(User u) {
 
 		this.getDBConnection();
-		String sqlCommand = "UPDATE SET user_id=?, phone=?, address=?, role=? WHERE email=?";
+		String sqlCommand = "UPDATE SET email=?, phone=?, address=?, role=?, password=? WHERE user_id=?";
 
 		try {
 			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(sqlCommand);
 
-			ps.setInt(1, u.getUser_id());
+			ps.setString(1, u.getEmail());
 
 			ps.setString(2, u.getPhone());
 			ps.setString(3, u.getAddress());
 			ps.setString(4, u.getRole());
+			ps.setString(5, sha1(u.getPassword()));
 
-			ps.setString(5, u.getEmail());
+			ps.setInt(6, u.getUser_id());
 
 			ps.executeUpdate();
 
@@ -145,6 +147,83 @@ public class UserDAOImpl implements UserDAO {
 		}
 
 		return foundUser;
+	}
+
+	@Override
+	public User getUserFromID(String id) {
+
+		this.getDBConnection();
+		String mySQLCommand = "SELECT * FROM user WHERE userID='" + id + "' LIMIT 1";
+		User foundUser = null;
+
+		try {
+			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(mySQLCommand);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int user_id = rs.getInt("userID");
+				String password = rs.getString("password");
+				String foundEmail = rs.getString("email");
+				String phone = rs.getString("phone");
+				String address = rs.getString("address");
+				String role = rs.getString("role");
+				String fullName = rs.getString("fullName");
+				foundUser = new User(user_id, foundEmail, password, fullName, phone, address, role);
+			}
+			this.mySQLConnection.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return foundUser;
+	}
+
+	@Override
+	public ArrayList<User> getUsersForAdminView() {
+
+		this.getDBConnection();
+		String mySQLCommand = "SELECT userID, email, fullName, phone, address, role FROM user";
+		ArrayList<User> resultList = new ArrayList<User>();
+
+		try {
+			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(mySQLCommand);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				User currUser = null;
+				int user_id = rs.getInt("userID");
+				String foundEmail = rs.getString("email");
+				String fullName = rs.getString("fullName");
+				String phone = rs.getString("phone");
+				String address = rs.getString("address");
+				String role = rs.getString("role");
+				currUser = new User(user_id, foundEmail, "", fullName, phone, address, role);
+				resultList.add(currUser);
+			}
+			this.mySQLConnection.close();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return resultList;
+	}
+
+	@Override
+	public void deleteUserByID(String id) {
+
+		this.getDBConnection();
+
+		String command = "DELETE FROM user WHERE userID=?";
+
+		try {
+			PreparedStatement ps = (PreparedStatement) this.mySQLConnection.prepareStatement(command);
+			ps.setInt(1, Integer.parseInt(id));
+			ps.executeUpdate();
+
+		} catch (SQLException e) {
+
+		}
+
 	}
 
 	private static String sha1(String input) {

@@ -4,8 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="css/login.css" rel='stylesheet' type='text/css' />
 <title>Reset password</title>
+<%@ include file="header.jsp"%>
+
 </head>
 <body>
 	<%
@@ -42,4 +43,6 @@
 	</div>
 
 </body>
+<%@ include file="footer.jsp"%>
+
 </html>

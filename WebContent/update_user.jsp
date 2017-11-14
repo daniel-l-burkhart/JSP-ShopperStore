@@ -1,16 +1,16 @@
-
-<%@page import="dao.UserDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="dao.UserDAOImpl"%>
 <%@page import="model.User"%>
 <%@page import="dao.UserDAO"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link href="css/login.css" rel='stylesheet' type='text/css' />
 <title>Update user account</title>
+<%@ include file="header.jsp"%>
+
 </head>
 <body>
 	<%
@@ -24,73 +24,68 @@
 			User u = userDAO.getUser(email);
 	%>
 
-	<!--/start-login-two-->
-	<div class="login-02">
-		<div class="two-login  hvr-float-shadow">
-			<div class="two-login-head">
-				<img src="images/top-note.png" alt="" />
-				<h2>Update User account</h2>
+	<div class="container">
+
+		<div class="jumbotron">
+			<h1>Update User Account</h1>
+		</div>
+
+		<ul>
+			<li style="color: red"><%=err%></li>
+		</ul>
+
+		<form action="UpdateUser" method="post">
+
+
+			<div class="form-group">
+				<label for="email">Email address</label> <input type="text"
+					class="form-control" value="<%=u.getEmail()%>"
+					onfocus="this.value = '';"
+					onblur="if (this.value == '') {this.value = '<%=u.getEmail()%>';}"
+					name="email">
 
 			</div>
 
-			<ul>
-				<li style="color: red"><%=err%></li>
-			</ul>
-			<form action="UpdateUser" method="post">
-				<table>
+			<div class="form-group">
+				<label for="password">Update Password</label> <input type="password"
+					class="form-control" value="<%=u.getPassword()%>"
+					onfocus="this.value = '';"
+					onblur="if (this.value == '') {this.value = '<%=u.getPassword()%>';}"
+					name="password">
+			</div>
 
-					<tr>
-						<td>Email</td>
-						<td><input type="text" class="text" value="<%=u.getEmail()%>"
-							name="email"><a href="#" class=" icon2 user2"></a></td>
-					</tr>
+			<div class="form-group">
+				<label for="fullName">Full Name</label> <input class="form-control"
+					type="text" value="<%=u.getFullName()%>" onfocus="this.value = '';"
+					onblur="if (this.value == '') {this.value = '<%=u.getFullName()%>';}"
+					name="fullName">
 
-					<tr>
-						<td>Update Password</td>
-						<td><input type="password" value="<%=u.getPassword()%>"
-							onfocus="this.value = '';"
-							onblur="if (this.value == '') {this.value = '<%=u.getPassword()%>';}"
-							name="password"><a href="#" class=" icon2 lock2"></a></td>
-					</tr>
+			</div>
+			<div class="form-group">
+				<label for="phone">Phone Number</label> <input class="form-control"
+					type="text" value="<%=u.getPhone()%>" onfocus="this.value = '';"
+					onblur="if (this.value == '') {this.value = '<%=u.getPhone()%>';}"
+					name="phone">
+			</div>
 
-					<tr>
+			<div class="form-group">
+				<label for="address">Address</label> <input class="form-control"
+					type="text" value="<%=u.getAddress()%>" onfocus="this.value = '';"
+					onblur="if (this.value == '') {this.value = '<%=u.getAddress()%>';}"
+					name="address">
+			</div>
 
-						<td>Full Name</td>
-						<td><input type="text" value="<%=u.getFullName()%>"
-							onfocus="this.value = '';"
-							onblur="if (this.value == '') {this.value = '<%=u.getFullName()%>';}"
-							name="fullName"><a href="#" class=" icon2 lock2"></a></td>
 
-					</tr>
-					<tr>
-						<td>Phone Number</td>
-						<td><input type="text" value="<%=u.getPhone()%>"
-							onfocus="this.value = '';"
-							onblur="if (this.value == '') {this.value = '<%=u.getPhone()%>';}"
-							name="phone"><a href="#" class=" icon2 lock2"></a></td>
 
-					</tr>
+			<button type="submit" class="btn btn-primary">Update Account</button>
 
-					<tr>
+			<input type="hidden" value="<%=u.getUser_id()%>" name="id">
+		</form>
 
-						<td>Address</td>
-						<td><input type="text" value="<%=u.getAddress()%>"
-							onfocus="this.value = '';"
-							onblur="if (this.value == '') {this.value = '<%=u.getAddress()%>';}"
-							name="address"><a href="#" class=" icon2 lock2"></a></td>
-					</tr>
+		<h5>
+			<a href="index.jsp">Back to the home page!</a>
+		</h5>
 
-				</table>
-
-				<div class="submit two">
-					<input type="submit" value="Submit"> <input type="hidden"
-						value="<%=u.getUser_id()%>" name="id">
-				</div>
-				<h5>
-					<a href="index.jsp">Back to the home page!</a>
-				</h5>
-			</form>
-		</div>
 	</div>
 
 	<%
@@ -100,4 +95,6 @@
 		}
 	%>
 </body>
+<%@ include file="footer.jsp"%>
+
 </html>

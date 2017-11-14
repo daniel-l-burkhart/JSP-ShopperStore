@@ -11,126 +11,130 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Search Products</title>
-<link rel="stylesheet" href="css/style.css" />
-<link rel="stylesheet" href="css/menu.css" />
-<link rel="stylesheet" href="css/product.css" />
 
 <%@ include file="header.jsp"%>
 </head>
 <body>
 
-	<div class="left">
+	<%
+		CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
+		ArrayList<Category> categoryList = new ArrayList<Category>();
+		categoryList = categoryDAO.getCategories();
+		ArrayList<Product> resultList = new ArrayList<Product>();
+		String err = "";
+	%>
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Search</h1>
+		</div>
+	</div>
+
+	<%
+		if (request.getAttribute("err") != null) {
+			err = (String) request.getAttribute("err");
+	%>
+	<ul>
+		<li style="color: red"><%=err%></li>
+	</ul>
+	<%
+		}
+	%>
+
+	<div class="container">
+
+		<form method="post" action="SearchServlet" name="SearchServlet">
+			<div class="form-group">
+				<label for="productName">Product Name</label> <input type="text"
+					class="form-control" name="productName">
+			</div>
+			<div class="form-group">
+				<label for="categoryName">Category</label> <br> <select
+					name="categoryName" class="form-control">
+					<option value="" selected="selected">--Select Category--</option>
+					<%
+						for (Category c : categoryList) {
+					%>
+					<option value="<%=c.getCategoryName()%>"><%=c.getCategoryName()%></option>
+					<%
+						}
+					%>
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-primary" name="search"
+				value="search">Search</button>
+		</form>
+	</div>
+
+	<br />
+	<br />
+
+	<div class="container">
 
 		<%
-			CategoryDAOImpl categoryDAO = new CategoryDAOImpl();
-			ArrayList<Category> categoryList = new ArrayList<Category>();
-			categoryList = categoryDAO.getCategories();
-			String err = "";
+			if (request.getAttribute("err") != null) {
+				err = (String) request.getAttribute("err");
 		%>
-		<div class="container">
-			<nav>
-			<ul class="mcd-menu">
-				<li>
-					<form accept-charset="utf-8" method="post" action="SearchServlet"
-						name="SearchServlet">
-						<p>
-							<label for="productName">Product Name</label> <br> <input
-								type="text" name="productName" style="width: 97%">
-						</p>
-						<p>
-							<label for="categoryName">Category</label> <br> <select
-								name="categoryName" style="width: 100%">
-								<option value="" selected="selected">--Select
-									Category--</option>
-								<%
-									for (Category c : categoryList) {
-								%>
-								<option value="<%=c.getCategoryName()%>"><%=c.getCategoryName()%></option>
-								<%
-									}
-								%>
-							</select>
-						</p>
-						<input type="submit" value="Search" name="search">
-					</form>
-				</li>
-				<li style="color: red"><%=err%></li>
-			</ul>
-			</nav>
-		</div>
-	</div>
+		<h3><%=err%></h3>
+		<%
+			}
+		%>
 
-	<div id="content">
+		<%
+			if (request.getAttribute("resultList") == null
+					&& (request.getAttribute("categoryName") != null || request.getAttribute("productName") != null)) {
+		%>
+		<h3>No products found</h3>
+		<%
+			}
+		%>
 
-		<div id="right">
+		<%
+			if (request.getAttribute("resultList") != null) {
+				resultList = (ArrayList<Product>) request.getAttribute("resultList");
+		%>
+		<h4>Results</h4>
+		<table class="table">
+
+			<tr>
+				<th>Image</th>
+				<th>Name</th>
+				<th>Price</th>
+				<th>Company</th>
+				<th>Details</th>
+			</tr>
+
 			<%
-				ProductDAOImpl productDAO = new ProductDAOImpl();
-				ArrayList<Product> list = new ArrayList<Product>();
-				list = productDAO.getProducts();
-				String productName = "";
-				String categoryName = "";
-				if (request.getParameter("productName") != null && request.getParameter("categoryName") != null) {
-					productName = request.getParameter("productName");
-					categoryName = request.getParameter("categoryName");
-				}
-				NumberFormat nf = NumberFormat.getInstance();
-				nf.setMinimumFractionDigits(0);
+				for (Product p : resultList) {
 			%>
-			<%
-				if (request.getAttribute("err") != null) {
-					err = (String) request.getAttribute("err");
-			%>
-			<h3><%=err%></h3>
+
+			<tr>
+				<td><a href="detail.jsp?productCode=<%=p.getProductCode()%>">
+						<img src="productImages/<%=p.getPictureName()%>" width=" 250px"
+						height="250px" />
+				</a></td>
+
+				<td><a href="detail.jsp?productCode=<%=p.getProductCode()%>">
+						<%=p.getProductName()%>
+				</a></td>
+				<td><%=p.getPrice()%></td>
+				<td><%=p.getManufacturer()%></td>
+				<td><%=p.getInformation()%></td>
+			</tr>
+
 			<%
 				}
 			%>
 
-			<%
-				if (productDAO.searchProducts(productName, categoryName).size() == 0 && err == "") {
-			%>
-			<h3>No products found</h3>
-			<%
-				}
-			%>
-			<div id="site-wrapper" style="float: left">
-				<ul class="products homepage">
+		</table>
 
-					<%
-						if (categoryName != null || productName != null) {
-							for (Product p : productDAO.searchProducts(productName, categoryName)) {
-					%>
-
-					<li class="preorder"><span class="tagimg "> </span> <a
-						href="detail.jsp?productCode=<%=p.getProductCode()%>"> <img
-							src="productImages/<%=p.getPictureName()%>" width=" 250px"
-							height="250px" />
-							<h3><%=p.getProductName()%></h3>
-							<h4>
-								Price: $
-								<%=nf.format(p.getPrice())%>
-
-							</h4>
-							<p class="info">
-								<span>Manufacturer: <%=p.getManufacturer()%>
-								</span> <span>Price: $<%=nf.format(p.getPrice())%>
-								</span> <span>Details: <%=p.getInformation()%>
-							</p>
-					</a></li>
-
-					<%
-						}
-						} else {
-					%>
-					<h3>Enter search information</h3>
-					<%
-						}
-					%>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div id="footer"><jsp:include page="footer.jsp"></jsp:include></div>
+		<%
+			}
+		%>
 	</div>
 
 </body>
+<%@ include file="footer.jsp"%>
+
 </html>

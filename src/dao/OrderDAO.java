@@ -2,9 +2,9 @@ package dao;
 
 import java.util.ArrayList;
 
-import model.History;
+import model.Order;
 
-public interface HistoryDAO {
+public interface OrderDAO {
 
 	/**
 	 * Adds new purchase history to database
@@ -12,7 +12,7 @@ public interface HistoryDAO {
 	 * @param newHistory
 	 *            The object represention of the purchase.
 	 */
-	public void addHistory(History newHistory);
+	public void addHistory(Order newHistory);
 
 	/**
 	 * Gets all purchases for a user
@@ -21,6 +21,13 @@ public interface HistoryDAO {
 	 *            The user's ID
 	 * @return An arraylist of all of their purchases
 	 */
-	public ArrayList<History> getHistoriesForUser(int userID);
+	public ArrayList<Order> getHistoriesForUser(int userID);
+
+	/**
+	 * Gets all sales orders for Admin view
+	 * 
+	 * @return A list of sales orders
+	 */
+	public ArrayList<Order> getHistoriesForAdmin();
 
 }

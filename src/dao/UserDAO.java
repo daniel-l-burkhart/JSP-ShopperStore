@@ -1,5 +1,7 @@
 package dao;
 
+import java.util.ArrayList;
+
 import model.User;
 
 public interface UserDAO {
@@ -49,4 +51,27 @@ public interface UserDAO {
 	 */
 	public User getUser(String username);
 
+	/**
+	 * Gets the users details for admin view
+	 * 
+	 * @return An arraylist of user details
+	 */
+	public ArrayList<User> getUsersForAdminView();
+
+	/**
+	 * Gets a single user by their ID
+	 * 
+	 * @param id
+	 * @return A user object
+	 */
+	public User getUserFromID(String id);
+
+	/**
+	 * Deletes a single user by their ID
+	 * 
+	 * @param id
+	 *            The user's ID
+	 * 
+	 */
+	public void deleteUserByID(String id);
 }

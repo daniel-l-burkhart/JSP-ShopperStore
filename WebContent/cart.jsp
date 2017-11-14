@@ -26,7 +26,6 @@
 
 		if (session.getAttribute("cart") != null) {
 			cart = (Cart) session.getAttribute("cart");
-			System.out.println(cart);
 		}
 
 		System.out.println(cart);
@@ -69,67 +68,80 @@
 								productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice())%>
 			</td>
 
-			<td><a class="cart_quantity_up"
-				href="CartServlet?command=deleteCart&ma_san_pham=<%=item.getProduct().getProductCode()%>">
-					- </a> <input class="cart_quantity_input" type="number"
-				value="<%=item.getQuantity()%>" disabled="disabled"> <a
-				class="cart_quantity_up"
-				href="CartServlet?command=addCart&ma_san_pham=<%=item.getProduct().getProductCode()%>">
-					+ </a></td>
+			<td>
+				<div class="form-group">
 
+					<div class="col-sm-4">
+						<a class="cart_quantity_up"
+							href="CartServlet?command=deleteCart&productCode=<%=item.getProduct().getProductCode()%>">
+							- </a>
+					</div>
 
-			<td>$<%=nf
+					<div class="col-sm-4">
+						<input class="form-control" type="number"
+							value="<%=item.getQuantity()%>" disabled="disabled">
+					</div>
+
+					<div class="col-sm-4">
+						<a class="cart_quantity_up"
+							href="CartServlet?command=addCart&productCode=<%=item.getProduct().getProductCode()%>">
+							+ </a>
+					</div>
+
+				</div>
+
+			</td>
+
+			<td>$ <%=nf
 								.format(productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice()
 										* item.getQuantity())%> <a
-				href="CartServlet?command=removeCart&ma_san_pham=<%=item.getProduct().getProductCode()%>"><img
-					style="margin-left: 10px" src="images/delete.png"></a></td>
+				href="CartServlet?command=removeCart&productCode=<%=item.getProduct().getProductCode()%>">
 
+					<img style="margin-left: 10px" src="images/delete.png">
+			</a></td>
 		</tr>
 		<%
 			}
 				}
 		%>
 
-
 	</table>
 
 	<div class="container">
-		<p>
-			TOTAL:
-			<%=nf.format(total)%></p>
+		<ul class="list-group">
 
-		<%
-			if (cart.getLineItems().size() > 0) {
-		%>
+			<%
+				if (cart.getLineItems().size() > 0) {
+			%>
 
+			<li class="list-group-item">TOTAL: <%=nf.format(total)%></li>
 
-		<a class="checkout" href="history.jsp" style="text-decoration: none;">Order
-			History</a> <a class="checkout"
-			href="ConfirmServlet?username=<%=username%>"
-			style="text-decoration: none;">Checkout</a>
-		<%
-			} else {
-		%>
-		<a class="checkout" href="history.jsp" style="text-decoration: none;">History</a>
-		<a class="checkout" href="product.jsp" style="text-decoration: none;">Add
-			more products</a>
-		<%
-			}
-		%>
+			<li class="list-group-item"><a href="history.jsp"
+				style="text-decoration: none;">Order History</a></li>
+
+			<li class="list-group-item"><a class="checkout"
+				href="ConfirmServlet?username=<%=username%>">Checkout</a></li>
+			<%
+				} else {
+			%>
+			<li class="list-group-item"><a href="history.jsp">Order
+					History</a></li>
+			<li class="list-group-item"><a href="product.jsp">Add more
+					products</a></li>
+			<%
+				}
+			%>
+		</ul>
 
 	</div>
 
 	<%
 		} else {
-
 			String redirectURL = "index.jsp";
 			response.sendRedirect(redirectURL);
-
 		}
 	%>
 
-
-	<div id="footer"><jsp:include page="footer.jsp"></jsp:include></div>
-	</div>
 </body>
+<%@ include file="footer.jsp"%>
 </html>

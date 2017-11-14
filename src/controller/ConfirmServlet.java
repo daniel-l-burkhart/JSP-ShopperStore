@@ -25,9 +25,9 @@ import javax.servlet.http.HttpSession;
 
 import model.Cart;
 import model.CartItem;
-import model.History;
+import model.Order;
 import model.User;
-import dao.HistoryDAOImpl;
+import dao.OrderDAOImpl;
 import dao.ProductDAOImpl;
 import dao.UserDAO;
 import dao.UserDAOImpl;
@@ -37,14 +37,13 @@ public class ConfirmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserDAOImpl userDAO = new UserDAOImpl();
 	private ProductDAOImpl productDAO = new ProductDAOImpl();
-	private HistoryDAOImpl historyDAO = new HistoryDAOImpl();
+	private OrderDAOImpl historyDAO = new OrderDAOImpl();
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
 	public ConfirmServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -85,11 +84,13 @@ public class ConfirmServlet extends HttpServlet {
 								this.productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice())
 						+ " </li>";
 
-				History h = new History(0, u.getUser_id(), item.getProduct().getProductCode(), tdate,
+				Order h = new Order(0, u.getUser_id(), item.getProduct().getProductCode(), tdate,
 						item.getQuantity(), (item.getQuantity() * this.productDAO
 								.getSingleProductFromID(item.getProduct().getProductCode()).getPrice()));
 
-				historyDAO.addHistory(h);
+				this.productDAO.updateQuantity(item.getProduct().getProductCode(), item.getQuantity());
+
+				this.historyDAO.addHistory(h);
 			}
 		}
 		text += "Total Payment: <strong> $" + nf.format(total) + " </strong>";
@@ -119,7 +120,7 @@ public class ConfirmServlet extends HttpServlet {
 
 		cart.clearCart();
 		request.getSession().setAttribute("cart", cart);
-		response.sendRedirect("/shop/index.jsp");
+		response.sendRedirect("index.jsp");
 	}
 
 	/**

@@ -14,6 +14,7 @@ public class Product {
 	private double price;
 	private String manufacturer;
 	private String information;
+	private int quantity;
 
 	/**
 	 * Product constructor
@@ -41,7 +42,7 @@ public class Product {
 	 *            Description of the product
 	 */
 	public Product(int productCode, int category, String productName, String pictureName, double price,
-			String manufacturer, String information) {
+			String manufacturer, String information, int quantity) {
 
 		this();
 		this.productCode = productCode;
@@ -51,6 +52,15 @@ public class Product {
 		this.price = price;
 		this.manufacturer = manufacturer;
 		this.information = information;
+		this.quantity = quantity;
+	}
+
+	public int getQuantity() {
+		return this.quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	/**

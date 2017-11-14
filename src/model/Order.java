@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * 
  * @author daniel
  */
-public class History {
+public class Order {
 
 	private int historyID;
 	private int userID;
@@ -16,12 +16,12 @@ public class History {
 	private int number;
 	private double moneyPaid;
 	
-	public History() {
+	public Order() {
 		
 	}
 
 	/**
-	 * History constructor
+	 * Order constructor
 	 * 
 	 * @param historyID
 	 *            The ID for this row in the history table
@@ -36,7 +36,7 @@ public class History {
 	 * @param moneyTendered
 	 *            The order total
 	 */
-	public History(int historyID, int userID, int productCode, Timestamp timestamp, int number, double moneyTendered) {
+	public Order(int historyID, int userID, int productCode, Timestamp timestamp, int number, double moneyTendered) {
 		if (historyID < 0 || userID < 0 || productCode < 0 || number < 0) {
 			throw new IllegalArgumentException("Negative number found.");
 		} else if (timestamp == null) {
