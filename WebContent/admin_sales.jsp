@@ -6,7 +6,6 @@
 <%@page import="dao.ProductDAOImpl"%>
 <%@page import="model.Order"%>
 
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -15,6 +14,12 @@
 <%@ include file="header.jsp"%>
 </head>
 <body>
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Sales Records</h1>
+		</div>
+	</div>
 
 	<%
 		HttpSession adminCheckSession = request.getSession();

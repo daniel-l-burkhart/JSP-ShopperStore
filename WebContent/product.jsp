@@ -22,7 +22,7 @@
 	</div>
 	<div class="container">
 
-		<table class="datatable table table-striped table-bordered">
+		<table class=" table table-striped table-bordered">
 
 			<tr>
 				<th>Image</th>

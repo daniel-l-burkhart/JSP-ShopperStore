@@ -19,7 +19,14 @@
 			if (request.getAttribute("err") != null) {
 				err = (String) request.getAttribute("err");
 			}
-			String email = request.getParameter("username");
+
+			String email = null;
+			if (sessionUser.getRole().equals("1")) {
+				email = request.getParameter("username");
+			} else {
+				email = sessionUser.getEmail();
+			}
+
 			UserDAOImpl userDAO = new UserDAOImpl();
 			User u = userDAO.getUser(email);
 	%>

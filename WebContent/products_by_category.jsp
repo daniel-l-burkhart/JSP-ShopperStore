@@ -15,7 +15,6 @@
 </head>
 <%@ include file="header.jsp"%>
 <body>
-
 	<%
 		ProductDAOImpl productDAO = new ProductDAOImpl();
 		CategoryDAOImpl categoryDAO = new CategoryDAOImpl();

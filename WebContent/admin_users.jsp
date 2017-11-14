@@ -26,7 +26,6 @@
 		checkUser = (User) adminCheckSession.getAttribute("user");
 
 		if (adminCheckSession.getAttribute("user") != null && checkUser.getRole().equals("1")) {
-
 			UserDAOImpl users = new UserDAOImpl();
 			usersList = users.getUsersForAdminView();
 	%>
@@ -40,7 +39,7 @@
 			<th>Phone</th>
 			<th>Address</th>
 			<th>Role</th>
-			<th>Actions</th>
+			<th colspan="2">Actions</th>
 		</tr>
 
 		<%
@@ -54,6 +53,10 @@
 			<td><%=currUser.getPhone()%></td>
 			<td><%=currUser.getAddress()%></td>
 			<td><%=currUser.getRole()%>
+			<td><a class="btn btn-primary"
+				href="update_user.jsp?username=
+				<%=currUser.getEmail()%>">Edit
+					User</a></td>
 			<td><form action="AdminUsers" method="post">
 					<input type="hidden" value="<%=currUser.getUser_id()%>"
 						name="userID" />

@@ -11,8 +11,6 @@
 <%@ include file="header.jsp"%>
 
 <body>
-
-
 	<div class="container">
 		<div class="jumbotron">
 			<h1>View Categories</h1>
@@ -31,9 +29,8 @@
 				for (Category c : list) {
 			%>
 			<li class="list-group-item"><a
-				href="products_by_category.jsp?categoryID=<%=c.getCategoryID()%>"> <i
-					class="fafa-home"> <img src="images/<%=c.getCategoryID()%>.png">
-				</i> <strong><%=c.getCategoryName()%></strong>
+				href="products_by_category.jsp?categoryID=<%=c.getCategoryID()%>">
+					<strong><%=c.getCategoryName()%></strong>
 			</a></li>
 			<%
 				}
@@ -42,7 +39,6 @@
 		</nav>
 	</div>
 
-	<%@ include file="footer.jsp"%>
-
 </body>
+<%@ include file="footer.jsp"%>
 </html>

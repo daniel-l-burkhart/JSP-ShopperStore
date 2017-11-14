@@ -12,91 +12,90 @@
 <%@ include file="header.jsp"%>
 </head>
 <body>
+	<div class="container">
 
-	<%
-		String productCode = "";
-		String user = null;
-		if (request.getParameter("productCode") != null) {
-			productCode = request.getParameter("productCode");
-		}
+		<div class="jumbotron">
+			<h2>Product Details</h2>
+		</div>
 
-		if (request.getSession().getAttribute("user") != null) {
-			User loggedInUser = (User) request.getSession().getAttribute("user");
-			user = loggedInUser.getEmail();
-		}
+		<%
+			String productCode = "";
+			String user = null;
+			if (request.getParameter("productCode") != null) {
+				productCode = request.getParameter("productCode");
+			}
+			if (request.getSession().getAttribute("user") != null) {
+				User loggedInUser = (User) request.getSession().getAttribute("user");
+				user = loggedInUser.getEmail();
+			}
 
-		ProductDAOImpl productDAO = new ProductDAOImpl();
-		NumberFormat nf = NumberFormat.getInstance();
-		nf.setMinimumFractionDigits(0);
-	%>
+			ProductDAOImpl productDAO = new ProductDAOImpl();
+			NumberFormat nf = NumberFormat.getInstance();
+			nf.setMinimumFractionDigits(0);
+		%>
 
-	<img
-		src="productImages/<%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getPictureName()%>"
-		width="200px" height="200px" />
+		<div class="row">
+			<div class="col-lg-4">
 
+				<img
+					src="productImages/<%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getPictureName()%>"
+					width="100px" height="100px" />
+			</div>
 
-	<table>
-		<tr>
-			<td><%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getProductName()%>
-			</td>
-		</tr>
-		<tr>
-			<td class="col1">Manufacturer:</td>
-			<td class="col2"><%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getManufacturer()%></td>
-		</tr>
+			<div class="col-lg-6">
 
-		<tr>
-			<td class="col1">Price:</td>
-			<td class="col2"><%=nf.format(productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getPrice())%>
-			</td>
-		</tr>
+				<table class="table table-responsive">
+					<tr>
+						<td>Product Name</td>
+						<td><%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getProductName()%>
+						</td>
+					</tr>
+					<tr>
+						<td>Manufacturer:</td>
+						<td><%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getManufacturer()%></td>
+					</tr>
 
-	</table>
+					<tr>
+						<td>Price:</td>
+						<td><%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getPrice()%>
+						</td>
+					</tr>
 
-	<%
-		if (user != null) {
-	%>
-	<div
-		style="margin-left: auto; margin-right: auto; text-align: center; margin-top: 10px; padding: 10px; clear: both;">
-		<a href="#"><img src="images/cart.png" /></a>
-		
-		<form action="CartServlet" method="post">
-			<input type="number" min="1" value="1" name="number" /> <input
-				type="hidden" value="setCart" name="command" /> <input
-				type="hidden" value="<%=productCode%>" name="productCode" /> <input
-				type="submit" value="Add to cart">
-		</form>
-	</div>
-	<%
-		} else {
-	%>
-	<div
-		style="margin-left: auto; margin-right: auto; text-align: center; margin-top: 10px; padding: 10px; clear: both;">
-		<a href="login.jsp"><img src="images/giohang.png" /></a>
-	</div>
-	<%
-		}
-	%>
-	<div class="left-3">
-		<article> <input type="checkbox" id="read_more"
-			role="button"> <label for="read_more" onclick=""
-			style="width: 770px; margin-left: 150px; margin-right: auto;">
-			<span>View Details</span> <span>Close</span>
-		</label> <section>
-		<table>
+					<tr>
+						<td>Information:</td>
+						<td><%=productDAO.getSingleProductFromID(Integer.parseInt(productCode)).getInformation()%></td>
+					</tr>
 
+				</table>
+			</div>
+		</div>
 
-			<tr rowspan="2">
-				<td class="detail-1">Details</td>
-				<td class="detail-2">Update</td>
-			</tr>
+		<%
+			if (user != null) {
+		%>
 
+		<div>
 
-		</table>
-		</section> </article>
-	</div>
+			<form action="CartServlet" method="post">
+				<input type="number" min="1" value="1" name="number" /> <input
+					type="hidden" value="setCart" name="command" /> <input
+					type="hidden" value="<%=productCode%>" name="productCode" />
+
+				<button class="btn btn-success" type="submit">Add to Cart</button>
+			</form>
+		</div>
+		<%
+			} else {
+		%>
+		<div>
+			<a class="btn btn-primary" href="login.jsp">Login to add to cart!</a>
+		</div>
+		<%
+			}
+		%>
 
 	</div>
+
 
 </body>
 <%@ include file="footer.jsp"%>
