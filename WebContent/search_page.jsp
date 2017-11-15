@@ -111,8 +111,7 @@
 
 			<tr>
 				<td><a href="detail.jsp?productCode=<%=p.getProductCode()%>">
-						<img src="productImages/<%=p.getPictureName()%>" width=" 250px"
-						height="250px" />
+						<img src="productImages/<%=p.getPictureName()%>" width=" 200px" />
 				</a></td>
 
 				<td><a href="detail.jsp?productCode=<%=p.getProductCode()%>">

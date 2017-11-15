@@ -9,6 +9,10 @@
 </head>
 
 <body>
+
+	<%
+		if (username == null) {
+	%>
 	<div class="container">
 		<div class="jumbotron">
 			<h1>Login</h1>
@@ -17,8 +21,8 @@
 		<ul>
 			<%
 				String err = "";
-				if (request.getAttribute("err") != null) {
-					err = (String) request.getAttribute("err");
+					if (request.getAttribute("err") != null) {
+						err = (String) request.getAttribute("err");
 			%>
 			<li style="color: red"><%=err%></li>
 			<%
@@ -29,8 +33,8 @@
 		<ul>
 			<%
 				String mess = "";
-				if (request.getAttribute("mess") != null) {
-					mess = (String) request.getAttribute("mess");
+					if (request.getAttribute("mess") != null) {
+						mess = (String) request.getAttribute("mess");
 			%>
 			<li style="color: red"><%=mess%></li>
 			<%
@@ -65,6 +69,12 @@
 		</h5>
 
 	</div>
+	<%
+		} else {
+			String redirectURL = "index.jsp";
+			response.sendRedirect(redirectURL);
+		}
+	%>
 </body>
 <%@ include file="footer.jsp"%>
 

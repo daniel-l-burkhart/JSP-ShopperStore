@@ -51,7 +51,7 @@
 		%>
 
 		<tr>
-			<td><%=order.getHistoryID()%></td>
+			<td><%=order.getOrderID()%></td>
 			<td><%=userDAO.getUserFromID(Integer.toString(order.getUserID())).getFullName()%>
 			</td>
 			<td><%=productDAO.getSingleProductFromID(order.getProductCode()).getProductName()%></td>

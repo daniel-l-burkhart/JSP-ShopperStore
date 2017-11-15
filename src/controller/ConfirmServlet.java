@@ -16,6 +16,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,6 +53,17 @@ public class ConfirmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String url = "/index.jsp";
+		RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
+		rd.forward(request, response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 		String username = request.getParameter("username");
 		User u = this.userDAO.getUser(username);
@@ -84,9 +96,9 @@ public class ConfirmServlet extends HttpServlet {
 								this.productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice())
 						+ " </li>";
 
-				Order h = new Order(0, u.getUser_id(), item.getProduct().getProductCode(), tdate,
-						item.getQuantity(), (item.getQuantity() * this.productDAO
-								.getSingleProductFromID(item.getProduct().getProductCode()).getPrice()));
+				Order h = new Order(0, u.getUser_id(), item.getProduct().getProductCode(), tdate, item.getQuantity(),
+						(item.getQuantity() * this.productDAO.getSingleProductFromID(item.getProduct().getProductCode())
+								.getPrice()));
 
 				this.productDAO.updateQuantity(item.getProduct().getProductCode(), item.getQuantity());
 
@@ -121,14 +133,6 @@ public class ConfirmServlet extends HttpServlet {
 		cart.clearCart();
 		request.getSession().setAttribute("cart", cart);
 		response.sendRedirect("index.jsp");
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
 
 	}
 }

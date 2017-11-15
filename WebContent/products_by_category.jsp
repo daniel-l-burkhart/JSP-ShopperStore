@@ -28,6 +28,7 @@
 			categoryID = request.getParameter("categoryID");
 			categoryName = categoryDAO.getCategory(Integer.parseInt(categoryID)).getCategoryName();
 		}
+		if (categoryID != null) {
 	%>
 
 	<div class="container">
@@ -37,45 +38,46 @@
 				Category:
 				<%=categoryName%></h3>
 		</div>
+
+
+		<table class="table table-striped table-bordered table-responsive">
+			<tr>
+				<th>Image</th>
+				<th>Product Name</th>
+				<th>Price</th>
+				<th>Manufacturer</th>
+				<th>Detail</th>
+			</tr>
+
+			<%
+				for (Product currProduct : productDAO.getAllProductsFromCategory(Integer.parseInt(categoryID))) {
+			%>
+
+
+			<tr>
+				<td><a
+					href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">
+
+						<img src="productImages/<%=currProduct.getPictureName()%>"
+						width="250px" />
+
+				</a></td>
+
+				<td><%=currProduct.getProductName()%></td>
+				<td>$<%=currProduct.getPrice()%></td>
+				<td><%=currProduct.getManufacturer()%></td>
+				<td><a class="btn btn-primary"
+					href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">Details
+				</a></td>
+
+			</tr>
+
+			<%
+				}
+			%>
+
+		</table>
 	</div>
-
-	<%
-		if (categoryID != null) {
-			for (Product currProduct : productDAO.getAllProductsFromCategory(Integer.parseInt(categoryID))) {
-	%>
-
-	<table class="table table-striped table-bordered table-responsive">
-		<tr>
-			<th>Image</th>
-			<th>Product Name</th>
-			<th>Price</th>
-			<th>Manufacturer</th>
-			<th>Detail</th>
-		</tr>
-		<tr>
-			<td><a
-				href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">
-
-					<img src="productImages/<%=currProduct.getPictureName()%>"
-					width="250px" height="250px" />
-
-			</a></td>
-
-			<td><%=currProduct.getProductName()%></td>
-			<td>$<%=currProduct.getPrice()%></td>
-			<td><%=currProduct.getManufacturer()%></td>
-			<td><a class="btn btn-primary"
-				href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">Details
-			</a></td>
-
-		</tr>
-
-		<%
-			}
-		%>
-
-	</table>
-
 	<%
 		} else {
 			String redirectURL = "index.jsp";

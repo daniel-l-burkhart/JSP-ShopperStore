@@ -28,8 +28,6 @@
 			cart = (Cart) session.getAttribute("cart");
 		}
 
-		System.out.println(cart);
-
 		if (cart != null) {
 	%>
 
@@ -37,75 +35,119 @@
 		<div class="jumbotron">
 			<h1>Shopping cart!</h1>
 		</div>
-	</div>
-
-	<table class="table">
-		<tr>
-			<th>Product Image</th>
-			<th>Product Name</th>
-			<th>Product Price</th>
-			<th>Product Quantity</th>
-			<th>Product Line Price</th>
-		</tr>
 
 		<%
-			if (cart != null) {
-					for (CartItem item : cart.getLineItems()) {
-						total = total + (item.getQuantity()
-								* productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice());
+			if (cart.getLineItems().size() > 0) {
 		%>
-		<tr>
 
+		<table class="table">
+			<thead>
+				<th class="text-center">Image</th>
+				<th class="text-center">Product Name</th>
+				<th class="text-center">Price</th>
+				<th class="text-center">Quantity</th>
+				<th class="text-center">Line Price</th>
+				<th class="text-center">Remove</th>
+			</thead>
 
-			<td><img
-				src="productImages/<%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPictureName()%>"
-				width="250px" height="250px" /></td>
+			<%
+				for (CartItem item : cart.getLineItems()) {
+							total = total + (item.getQuantity()
+									* productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice());
+			%>
+			<tr>
 
-			<td><%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getProductName()%>
-			</td>
+				<td><img
+					src="productImages/<%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPictureName()%>"
+					width="200px" /></td>
 
-			<td>$<%=nf.format(
+				<td><%=productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getProductName()%>
+				</td>
+
+				<td>$<%=nf.format(
 								productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice())%>
-			</td>
+				</td>
 
-			<td>
-				<div class="form-group">
+				<td>
+					<div class="form-group">
 
-					<div class="col-sm-4">
-						<a class="cart_quantity_up"
-							href="CartServlet?command=deleteCart&productCode=<%=item.getProduct().getProductCode()%>">
-							- </a>
+						<div class="text-center col-sm-4">
+
+							<form action="CartServlet" method="post">
+								<input type="hidden" name="command" value="deleteCart" /> <input
+									type="hidden" name="productCode"
+									value="<%=item.getProduct().getProductCode()%>" />
+								<button class="btn btn-default" type="submit">
+									<span class="glyphicon glyphicon-minus"></span>
+								</button>
+							</form>
+
+						</div>
+
+						<div class="text-center col-sm-4">
+							<input class="form-control" type="number"
+								value="<%=item.getQuantity()%>" disabled="disabled">
+						</div>
+
+						<div class="text-center col-sm-4">
+
+
+							<form action="CartServlet" method="post">
+								<input type="hidden" name="command" value="addCart" /> <input
+									type="hidden" name="productCode"
+									value="<%=item.getProduct().getProductCode()%>" />
+								<button type="submit" class="btn btn-default">
+									<span class="glyphicon glyphicon-plus"></span>
+								</button>
+							</form>
+						</div>
+
 					</div>
 
-					<div class="col-sm-4">
-						<input class="form-control" type="number"
-							value="<%=item.getQuantity()%>" disabled="disabled">
-					</div>
+				</td>
 
-					<div class="col-sm-4">
-						<a class="cart_quantity_up"
-							href="CartServlet?command=addCart&productCode=<%=item.getProduct().getProductCode()%>">
-							+ </a>
-					</div>
-
-				</div>
-
-			</td>
-
-			<td>$ <%=nf
+				<td>$ <%=nf
 								.format(productDAO.getSingleProductFromID(item.getProduct().getProductCode()).getPrice()
-										* item.getQuantity())%> <a
-				href="CartServlet?command=removeCart&productCode=<%=item.getProduct().getProductCode()%>">
+										* item.getQuantity())%>
 
-					<img style="margin-left: 10px" src="images/delete.png">
-			</a></td>
-		</tr>
+
+
+
+				</td>
+				<td>
+
+					<form action="CartServlet" method="post">
+						<input type="hidden" name="command" value="removeCart" /> <input
+							type="hidden" name="productCode"
+							value="<%=item.getProduct().getProductCode()%>" />
+						<button class="btn btn-danger" type="submit">
+							<span class="glyphicon glyphicon-remove"></span>
+						</button>
+					</form>
+				</td>
+			</tr>
+			<%
+				}
+			%>
+
+		</table>
+
+		<%
+			} else {
+		%>
+
+
+		<div class="jumbotron">
+
+			<h2>No items in cart yet! Keep shopping!</h2>
+		</div>
+
 		<%
 			}
-				}
 		%>
 
-	</table>
+	</div>
+
 
 	<div class="container">
 		<ul class="list-group">
@@ -116,18 +158,24 @@
 
 			<li class="list-group-item">TOTAL: <%=nf.format(total)%></li>
 
-			<li class="list-group-item"><a href="history.jsp"
-				style="text-decoration: none;">Order History</a></li>
+			<li class="list-group-item"><a class="btn btn-primary"
+				href="order.jsp" style="text-decoration: none;">Order History</a></li>
 
-			<li class="list-group-item"><a class="checkout"
-				href="ConfirmServlet?username=<%=username%>">Checkout</a></li>
+			<li class="list-group-item">
+
+				<form action="ConfirmServlet" method="post" name="checkout">
+					<input type="hidden" name="username" value="<%=username%>" />
+					<button class="btn btn-success" type="submit">Checkout</button>
+
+				</form>
+			</li>
 			<%
 				} else {
 			%>
-			<li class="list-group-item"><a href="history.jsp">Order
-					History</a></li>
-			<li class="list-group-item"><a href="product.jsp">Add more
-					products</a></li>
+			<li class="list-group-item"><a class="btn btn-primary"
+				href="order.jsp">Order History</a></li>
+			<li class="list-group-item"><a class="btn btn-success"
+				href="product.jsp">Add more products</a></li>
 			<%
 				}
 			%>

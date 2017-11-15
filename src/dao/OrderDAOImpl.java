@@ -21,14 +21,15 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public void addHistory(Order newHistory) {
 		this.getDBConnection();
-		String sqlCommand = "INSERT INTO history value(?,?,?,?,?,?)";
+		String sqlCommand = "INSERT INTO `store`.`order`"
+				+ "(`orderID`,`userID`,`productCode`,`timestamp`,`quantity`,`price`) " + " VALUES (?,?,?,?,?,?)";
 
 		PreparedStatement myPS;
 
 		try {
 			myPS = (PreparedStatement) this.mySQLConnection.prepareStatement(sqlCommand);
 
-			myPS.setInt(1, newHistory.getHistoryID());
+			myPS.setInt(1, newHistory.getOrderID());
 			myPS.setInt(2, newHistory.getUserID());
 			myPS.setInt(3, newHistory.getProductCode());
 			myPS.setTimestamp(4, newHistory.getTimeStamp());
@@ -49,7 +50,7 @@ public class OrderDAOImpl implements OrderDAO {
 	public ArrayList<Order> getHistoriesForUser(int userID) {
 		this.getDBConnection();
 
-		String sql = "SELECT * FROM history WHERE userID='" + userID + "'";
+		String sql = "SELECT * FROM `order` WHERE userID='" + userID + "'";
 		ArrayList<Order> orderHistory = new ArrayList<Order>();
 
 		try {
@@ -58,12 +59,12 @@ public class OrderDAOImpl implements OrderDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				int historyID = rs.getInt("historyID");
+				int historyID = rs.getInt("orderID");
 				int foundUserID = rs.getInt("userID");
 				int productCode = rs.getInt("productCode");
 				Timestamp timeStamp = rs.getTimestamp("timeStamp");
 				int number = rs.getInt("quantity");
-				double moneyPaid = rs.getDouble("orderTotal");
+				double moneyPaid = rs.getDouble("price");
 				orderHistory.add(new Order(historyID, foundUserID, productCode, timeStamp, number, moneyPaid));
 			}
 
@@ -77,7 +78,7 @@ public class OrderDAOImpl implements OrderDAO {
 	@Override
 	public ArrayList<Order> getHistoriesForAdmin() {
 		this.getDBConnection();
-		String command = "SELECT * FROM history";
+		String command = "SELECT * FROM `order`";
 		ArrayList<Order> sales = new ArrayList<Order>();
 
 		try {
@@ -86,12 +87,12 @@ public class OrderDAOImpl implements OrderDAO {
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				int historyID = rs.getInt("historyID");
+				int historyID = rs.getInt("orderID");
 				int foundUserID = rs.getInt("userID");
 				int productCode = rs.getInt("productCode");
 				Timestamp timeStamp = rs.getTimestamp("timeStamp");
 				int number = rs.getInt("quantity");
-				double moneyPaid = rs.getDouble("orderTotal");
+				double moneyPaid = rs.getDouble("price");
 				sales.add(new Order(historyID, foundUserID, productCode, timeStamp, number, moneyPaid));
 			}
 

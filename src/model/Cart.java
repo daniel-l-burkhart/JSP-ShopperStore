@@ -41,6 +41,9 @@ public class Cart {
 
 		for (CartItem item : this.lineItems) {
 
+			System.out.println(item.getProduct().getProductCode());
+			System.out.println(itemToBeRemoved.getProduct().getProductCode());
+
 			if (item.getProduct().getProductCode() == itemToBeRemoved.getProduct().getProductCode()) {
 				this.lineItems.remove(item);
 				return true;

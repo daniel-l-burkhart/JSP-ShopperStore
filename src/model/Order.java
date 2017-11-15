@@ -3,27 +3,27 @@ package model;
 import java.sql.Timestamp;
 
 /**
- * Order history class - remembers purchases
+ * Order history class - purchase object
  * 
  * @author daniel
  */
 public class Order {
 
-	private int historyID;
+	private int orderID;
 	private int userID;
 	private int productCode;
 	private Timestamp timeStamp;
 	private int number;
 	private double moneyPaid;
-	
+
 	public Order() {
-		
+
 	}
 
 	/**
 	 * Order constructor
 	 * 
-	 * @param historyID
+	 * @param orderID
 	 *            The ID for this row in the history table
 	 * @param userID
 	 *            The user's ID
@@ -44,7 +44,7 @@ public class Order {
 		} else if (moneyTendered < 0.0) {
 			throw new IllegalArgumentException("Negative money???");
 		}
-		this.historyID = historyID;
+		this.orderID = historyID;
 		this.userID = userID;
 		this.productCode = productCode;
 		this.timeStamp = timestamp;
@@ -53,25 +53,25 @@ public class Order {
 	}
 
 	/**
-	 * @return the historyID
+	 * @return the orderID
 	 */
-	public int getHistoryID() {
-		return historyID;
+	public int getOrderID() {
+		return orderID;
 	}
 
 	/**
-	 * @param historyID
-	 *            the historyID to set
+	 * @param orderID
+	 *            the orderID to set
 	 */
-	public void setHistoryID(int historyID) {
-		this.historyID = historyID;
+	public void setOrderID(int historyID) {
+		this.orderID = historyID;
 	}
 
 	/**
 	 * @return the userID
 	 */
 	public int getUserID() {
-		return userID;
+		return this.userID;
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class Order {
 	 * @return the productCode
 	 */
 	public int getProductCode() {
-		return productCode;
+		return this.productCode;
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class Order {
 	 * @return the timeStamp
 	 */
 	public Timestamp getTimeStamp() {
-		return timeStamp;
+		return this.timeStamp;
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class Order {
 	 * @return the number
 	 */
 	public int getNumber() {
-		return number;
+		return this.number;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class Order {
 	 * @return the moneyPaid
 	 */
 	public double getMoneyPaid() {
-		return moneyPaid;
+		return this.moneyPaid;
 	}
 
 	/**

@@ -56,7 +56,7 @@ public class CartServlet extends HttpServlet {
 
 			int productCodeInteger = Integer.parseInt(productCode);
 			CartItem deletingItem = new CartItem(productCodeInteger, 1);
-			this.deleteFromCart(deletingItem);
+			this.downsizeQuantity(deletingItem);
 
 			HttpSession session = request.getSession();
 			System.out.println(this.cart.getLineItems().size());
@@ -87,52 +87,52 @@ public class CartServlet extends HttpServlet {
 		}
 	}
 
-	private void addToCart(CartItem cartItem) {
+	private String addToCart(CartItem cartItem) {
 
 		for (CartItem item : this.cart.getLineItems()) {
 			if (item.getProduct().getProductCode() == cartItem.getProduct().getProductCode()) {
 				item.setQuantity(item.getQuantity() + 1);
-				// return "cart";
+				return "cart";
 			}
 		}
 
 		this.cart.addLineItemToCart(cartItem);
-		// return "cart";
+		return "cart";
 	}
 
-	private void deleteFromCart(CartItem itemToBeDeleted) {
+	private String downsizeQuantity(CartItem itemToBeDeleted) {
 
 		for (CartItem currItem : this.cart.getLineItems()) {
-			if (currItem.getProduct().getProductCode() == itemToBeDeleted.getProduct().getProductCode()
-					&& itemToBeDeleted.getQuantity() > 1) {
-				itemToBeDeleted.setQuantity(itemToBeDeleted.getQuantity() - 1);
-				// return "cart";
+			if ((currItem.getProduct().getProductCode() == itemToBeDeleted.getProduct().getProductCode())
+					&& currItem.getQuantity() > 1) {
+				currItem.setQuantity(currItem.getQuantity() - 1);
+				return "cart";
 			}
 		}
-		// return "cart";
+		return "cart";
 	}
 
-	private void removeFromCart(CartItem removingItem) {
+	private String removeFromCart(CartItem removingItem) {
 		for (CartItem currItem : this.cart.getLineItems()) {
 			if (currItem.getProduct().getProductCode() == removingItem.getProduct().getProductCode()) {
 				this.cart.removeCartItem(currItem);
-				// return "cart";
+				return "cart";
 			}
 		}
-		// return "cart";
+		return "cart";
 	}
 
-	private void setCart(CartItem myCartItem) {
+	private String setCart(CartItem myCartItem) {
 
 		for (CartItem item : this.cart.getLineItems()) {
 			if (item.getProduct().getProductCode() == myCartItem.getProduct().getProductCode()) {
 				item.setQuantity(myCartItem.getQuantity());
-				// return "cart";
+				return "cart";
 			}
 		}
 
 		this.cart.addLineItemToCart(myCartItem);
-		// return "cart";
+		return "cart";
 	}
 
 }

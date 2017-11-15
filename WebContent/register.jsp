@@ -12,6 +12,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <body>
 
+	<%
+		if (username == null) {
+	%>
 	<div class="container">
 		<div class="jumbotron">
 			<h1>New user sign up</h1>
@@ -66,6 +69,12 @@
 		</form>
 	</div>
 
+	<%
+		} else {
+			String redirectURL = "index.jsp";
+			response.sendRedirect(redirectURL);
+		}
+	%>
 </body>
 <%@ include file="footer.jsp"%>
 </html>

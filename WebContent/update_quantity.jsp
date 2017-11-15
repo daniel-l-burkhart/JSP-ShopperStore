@@ -49,7 +49,7 @@
 				href="detail.jsp?productCode=<%=currProduct.getProductCode()%>">
 
 					<img src="productImages/<%=currProduct.getPictureName()%>"
-					width="100px" height="100px" />
+					width="100px" />
 
 			</a></td>
 			<td><%=currProduct.getProductName()%></td>
